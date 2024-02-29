@@ -1,0 +1,44 @@
+---
+import Container from "@/components/Container.astro";
+
+const navLinks = [
+  {
+    text: "Reglas",
+    href: "",
+  },
+  {
+    text: "Agenda",
+    href: "",
+  },
+  {
+    text: "Patrocinadores",
+    href: "",
+  },
+  {
+    text: "Premios",
+    href: "",
+  },
+];
+---
+
+<header class="w-full">
+  <Container>
+    <nav class="w-fit mx-auto">
+      <ul
+        class="px-10 py-5 flex justify-center gap-x-12 border border-content rounded-full"
+      >
+        {
+          navLinks.map((navLink) => {
+            return (
+              <li class="font-bold lg:text-xl text-content opacity-75 hover:opacity-100 hover:drop-shadow-custom  transition-opacity">
+                <a href="" class="">
+                  {navLink.text}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </Container>
+</header>
