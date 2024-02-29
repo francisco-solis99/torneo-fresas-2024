@@ -7,8 +7,19 @@ export default {
         'xs': '448px',
       },
 			fontFamily: {
-				archivo: ["Archivo Variable", "sans-serif"]
-			}
+				archivo: ["Archivo Variable", "sans-serif"],
+				audioWide: ["Audiowide", "system-ui"]
+			},
+			colors: {
+				'primary': 'var(--color-primary)',
+				'secondary': 'var(--color-secondary)',
+				'accent': 'var(--color-accent)',
+				'background': 'var(--color-background)',
+				'content': 'var(--color-content)'
+			},
+			dropShadow: {
+        'custom': '0 5px 25px var(--color-content)',
+      }
 		},
 	},
 	plugins: [],

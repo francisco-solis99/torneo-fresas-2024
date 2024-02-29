@@ -1,5 +1,6 @@
 ---
 import "@fontsource-variable/archivo";
+import "@fontsource/audiowide";
 
 interface Props {
   title: string;
@@ -16,19 +17,52 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="" />
+    <meta
+      name="keywords"
+      content="torneo, frontenis, torneo de las fresas, raqueta"
+    />
+
+    <!-- meta tags  -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta name="twitter:site" content="@" /> -->
+    <!-- <meta name="twitter:creator" content="@" /> -->
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/og.jpg" />
+
+    <meta name="og:image" content="/og.jpg" />
+    <meta name="og:title" content={title} />
+    <meta name="og:description" content={description} />
+    <meta name="og:url" content="" />
+    <meta name="og:site_name" content="Torneo de las Fresas 2024" />
+    <meta name="og:type" content="website" />
+    <meta name="og:locale" content="es_MX" />
+
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <div class="min-w-[300px] max-w-[2440px]">
+      <slot />
+    </div>
   </body>
 </html>
 <style is:global>
   :root {
+    --color-primary: #ff4545;
+    --color-secondary: #ffcf40;
+    --color-accent: #881414;
+    --color-background: #111112;
+    --color-content: #fff;
   }
 
   html {
     font-family: "Archivo Variable", sans-serif;
     scroll-behavior: smooth;
+    background: var(--color-background);
+    color: var(--color-content);
   }
 
   body {
