@@ -1,0 +1,41 @@
+---
+import LocationIcon from "@/components/icons/Location.astro";
+---
+
+<main class="my-16 grid place-items-center gap-y-3">
+  <picture class="block max-w-[200px] md:max-w-[240px] lg:max-w-[260px]">
+    <img
+      src="./tournament.webp"
+      alt="Raqueta con fresas salinedo de su red - Torneo de las Fresas 2024"
+    />
+  </picture>
+  <h1
+    class="text-center font-bold font-audioWide text-5xl md:text-6xl lg:text-7xl"
+  >
+    Torneo de las <strong class="text-primary"> <br /> Fresas</strong>
+  </h1>
+  <div
+    class="mt-8 flex justify-center items-center gap-x-8 md:gap-x-12 lg:gap-x-20"
+  >
+    <div class="text-center font-bold">
+      <span class="text-5xl sm:text-6xl">07</span>
+      <br />
+      <span class="text-2xl sm:text-3xl md:text-4xl">Abril</span>
+      <br />
+      <span class="text-xl sm:text-2xl">8:00am</span>
+    </div>
+    <a
+      href="https://maps.app.goo.gl/dorfTAR3MytWaSE56"
+      target="_blank"
+      rel="nofollow"
+      class="text-center hover:scale-125 transition-transform"
+    >
+      <span class="flex justify-center">
+        <LocationIcon />
+      </span>
+      <span class="text-xl sm:text-2xl lg:text-3xl font-semibold">
+        Deportiva<br />Norte
+      </span>
+    </a>
+  </div>
+</main>
