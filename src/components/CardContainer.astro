@@ -1,0 +1,39 @@
+---
+const { class: className } = Astro.props;
+---
+
+<article
+  class:list={[
+    "layer__card relative px-8 py-6 rounded-3xl overflow-hidden",
+    className,
+  ]}
+>
+  <slot />
+</article>
+
+<style>
+  /* .layer__card {
+    box-shadow: 2px 3px 5px rgba(255, 255, 255, 0.2);
+  } */
+
+  .layer__card::before {
+    --line: hsl(0 0% 95% / 0.2);
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+        5vmin 5vmin,
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 5vmin
+        5vmin,
+      linear-gradient(
+        to left top,
+        rgba(255, 69, 69, 0.4),
+        rgba(0, 0, 0, 0.95) 65%
+      );
+  }
+</style>
