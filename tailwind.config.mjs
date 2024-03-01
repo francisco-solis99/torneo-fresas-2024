@@ -7,7 +7,7 @@ export default {
         'xs': '448px',
       },
 			fontFamily: {
-				archivo: ["Archivo Variable", "sans-serif"],
+				dmSans: ["DM Sans Variable", "sans-serif"],
 				audioWide: ["Audiowide", "system-ui"]
 			},
 			colors: {
