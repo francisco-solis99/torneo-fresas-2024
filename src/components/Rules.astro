@@ -1,0 +1,127 @@
+---
+import Container from "@/components/Container.astro";
+import MoneyIcon from "@/components/icons/Money.astro";
+import RaquetIcon from "@/components/icons/Raquet.astro";
+import ShirtIcon from "@/components/icons/Shirt.astro";
+import PlayerIcon from "@/components/icons/Player.astro";
+import PhaseIcon from "@/components/icons/Phase.astro";
+import CardContainer from "@/components/CardContainer.astro";
+---
+
+<section class="mt-40 mb-40">
+  <Container class:list={["max-w-7xl"]}>
+    <hgroup class="mb-16">
+      <h2 class="text-6xl font-bold text-center">Asi se jugará</h2>
+      <p class="mt-4 text-center">
+        With Figma's most powerful features optimised for Cabana, say goodbye to
+        the old way of working, and hello to a new and improved workflow.
+      </p>
+    </hgroup>
+    <div class="grid grid-cols-4 grid-rows-[repeat(3,auto)] gap-7">
+      <CardContainer
+        class:list={[
+          "col-span-2 row-span-2 text-lg flex flex-col gap-y-5 justify-center",
+        ]}
+      >
+        <span class="flex justify-center text-primary">
+          <MoneyIcon />
+        </span>
+        <div>
+          <h3 class="text-3xl font-bold">Inscripciones y dinamica</h3>
+          <ul class="mt-3 leading-relaxed list-disc pl-5">
+            <li>
+              El costo de la inscripción por persona es de <strong
+                class="text-primary">$300 MXN</strong
+              >
+            </li>
+            <li>El número de parejas participantes sera de 36.</li>
+            <li>
+              El número de grupos seran 12, donde en cada grupo habran 3
+              parejas.
+            </li>
+          </ul>
+        </div>
+      </CardContainer>
+      <CardContainer class:list={["col-span-2 flex gap-x-3 items-center"]}>
+        <span class="flex justify-center text-primary">
+          <RaquetIcon />
+        </span>
+        <div>
+          <h3 class="text-3xl font-bold">Canchas y pelota</h3>
+          <ul class="mt-3 leading-relaxed list-disc pl-5">
+            <li>El número de canchas destinadas para los partidos serán 3.</li>
+            <li>
+              La pelota del torneo será HEAD o MasterPro Pre-Olímpico, sin
+              embargo se les hace la petición a cada pareja de llevar una bola.
+            </li>
+          </ul>
+        </div>
+      </CardContainer>
+      <CardContainer class:list={["col-span-2 flex gap-x-3 items-center"]}>
+        <div>
+          <h3 class="text-3xl font-bold">Consejos</h3>
+          <ul class="mt-3 leading-relaxed list-disc pl-5">
+            <li>
+              Las parejas deberán ir uniformados, playera del mismo color o
+              similar.
+            </li>
+            <li>
+              Los lentes de protección no son obligatorios, más si
+              recomendables.
+            </li>
+            <li>Recomendable el uso de gorra y bloqueador.</li>
+          </ul>
+        </div>
+        <span class="flex justify-center text-primary">
+          <ShirtIcon />
+        </span>
+      </CardContainer>
+      <CardContainer class:list={["col-span-3 flex gap-x-3 items-center"]}>
+        <span class="flex justify-center text-primary mb-6">
+          <PlayerIcon />
+        </span>
+        <div>
+          <h3 class="text-3xl font-bold">El juego</h3>
+          <ul class="mt-3 leading-relaxed list-disc pl-5">
+            <li>
+              Partido a 10 pts o 20 min. Gana quien llegue a 10 o esté arriba en
+              el marcador al acabar el tiempo.
+            </li>
+            <li>Bola de saque, se jugará un punto para ver quien saca</li>
+            <li>
+              El tiempo limite de espera antes de marcar la perdida por default
+              de un partido es de 5 minutos.
+            </li>
+            <li>
+              En caso de que una pareja decida no jugar alguno de sus partidos,
+              se dará la perdidad por default y solo 5 puntos serán asignados a
+              la pareja vencedora.
+            </li>
+            <li>
+              La pareja ganadora de cada encuentro, se encargará de fungir como
+              juez en el proximo partido; juez de linea y juez central
+            </li>
+          </ul>
+        </div>
+      </CardContainer>
+      <CardContainer class:list={[""]}>
+        <span class="flex justify-center text-primary mb-6">
+          <PhaseIcon />
+        </span>
+        <div>
+          <h3 class="text-3xl font-bold ">Siguiente Fase</h3>
+          <ul class="mt-3 leading-relaxed list-disc pl-5">
+            <li>
+              Por sistema de doble eliminación, una pareja queda eliminada del
+              torneo tras perder dos partidos.
+            </li>
+            <li>
+              Avanzan a la siguiente fase las dos primeras parejas de cada
+              grupo.
+            </li>
+          </ul>
+        </div>
+      </CardContainer>
+    </div>
+  </Container>
+</section>
