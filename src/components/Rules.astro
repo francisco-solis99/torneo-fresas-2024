@@ -12,12 +12,12 @@ import CardContainer from "@/components/CardContainer.astro";
   <Container class:list={["max-w-7xl"]}>
     <hgroup class="mb-16">
       <h2
-        class="py-2 text-3xl font-bold text-center bg-gradient-to-t from-white to-red-500/95 text-transparent bg-clip-text sm:text-4xl lg:text-5xl"
+        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-r from-white to-red-500/95 text-transparent bg-clip-text xs:text-5xl"
       >
         Asi se jugará
       </h2>
-      <p class="mt-4 text-center text-base md:text-lg">
-        Prepárate para <strong class=""
+      <p class="mt-4 text-center text-base md:text-lg text-gray-300">
+        Prepárate para <strong class="text-white"
           >la segunda edición del Torneo de las Fresas</strong
         > la competencia de frontenis que te hará sudar y disfrutar al máximo. A
         continuación, te presentamos las reglas oficiales para que puedas ir calentando
@@ -29,11 +29,13 @@ import CardContainer from "@/components/CardContainer.astro";
     >
       <CardContainer
         class:list={[
-          "col-span-2 sm:row-span-2 md:text-lg flex flex-col gap-y-5 justify-center",
+          "col-span-2 sm:row-span-2 md:text-lg flex flex-col gap-y-5 justify-center group",
         ]}
       >
-        <span class="flex justify-center text-primary">
-          <MoneyIcon class:list={["w-36 h-36 md:w-auto md:h-auto"]} />
+        <span
+          class="flex justify-center text-primary group-hover:scale-110 transition-transform"
+        >
+          <MoneyIcon class:list={["w-32 h-32 md:w-auto md:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">Inscripciones y dinamica</h3>
@@ -53,11 +55,13 @@ import CardContainer from "@/components/CardContainer.astro";
       </CardContainer>
       <CardContainer
         class:list={[
-          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col md:flex-row gap-x-3 gap-y-2 items-center",
+          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col md:flex-row gap-x-3 gap-y-2 items-center group",
         ]}
       >
-        <span class="flex justify-center text-primary">
-          <RaquetIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
+        <span
+          class="flex justify-center text-primary group-hover:scale-105 transition-transform"
+        >
+          <RaquetIcon class:list={["w-24 h-24 lg:w-auto lg:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">Canchas y pelota</h3>
@@ -72,7 +76,7 @@ import CardContainer from "@/components/CardContainer.astro";
       </CardContainer>
       <CardContainer
         class:list={[
-          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col-reverse sm:flex-col md:flex-row gap-x-3 gap-y-2 items-center",
+          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col-reverse sm:flex-col md:flex-row gap-x-3 gap-y-2 items-center group",
         ]}
       >
         <div>
@@ -89,17 +93,21 @@ import CardContainer from "@/components/CardContainer.astro";
             <li>Recomendable el uso de gorra y bloqueador.</li>
           </ul>
         </div>
-        <span class="flex justify-center text-primary">
-          <ShirtIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
+        <span
+          class="flex justify-center text-primary group-hover:scale-105 transition-transform"
+        >
+          <ShirtIcon class:list={["w-24 h-24 lg:w-auto lg:h-auto"]} />
         </span>
       </CardContainer>
       <CardContainer
         class:list={[
-          "col-span-2 xl:col-span-3 flex flex-col xl:flex-row gap-x-3 items-center",
+          "col-span-2 xl:col-span-3 flex flex-col xl:flex-row gap-x-3 items-center group",
         ]}
       >
-        <span class="flex justify-center text-primary mb-6">
-          <PlayerIcon class:list={["w-36 h-36 md:w-auto md:h-auto"]} />
+        <span
+          class="flex justify-center text-primary mb-6 group-hover:scale-105 transition-transform"
+        >
+          <PlayerIcon class:list={["w-32 h-32 md:w-auto md:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">El juego</h3>
@@ -125,9 +133,11 @@ import CardContainer from "@/components/CardContainer.astro";
           </ul>
         </div>
       </CardContainer>
-      <CardContainer class:list={["col-span-2 xl:col-span-1 self-start"]}>
-        <span class="flex justify-center text-primary mb-6">
-          <PhaseIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
+      <CardContainer class:list={["col-span-2 xl:col-span-1 self-start group"]}>
+        <span
+          class="flex justify-center text-primary mb-6 group-hover:scale-105 transition-transform"
+        >
+          <PhaseIcon class:list={["w-24 h-24 lg:w-auto lg:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">Siguiente Fase</h3>
