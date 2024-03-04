@@ -12,10 +12,6 @@ const { class: className } = Astro.props;
 </article>
 
 <style>
-  /* .layer__card {
-    box-shadow: 2px 3px 5px rgba(255, 255, 255, 0.2);
-  } */
-
   .layer__card::before {
     --line: hsl(0 0% 95% / 0.2);
     content: "";
@@ -33,7 +29,7 @@ const { class: className } = Astro.props;
       linear-gradient(
         to left top,
         rgba(255, 69, 69, 0.4),
-        rgba(0, 0, 0, 0.95) 65%
+        rgba(9, 9, 9, 0.95) 65%
       );
   }
 </style>
