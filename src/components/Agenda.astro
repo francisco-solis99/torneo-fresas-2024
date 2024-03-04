@@ -1,0 +1,67 @@
+---
+import Container from "@/components/Container.astro";
+import CardTime from "@/components/CardTime.astro";
+
+const agenda = [
+  {
+    title: "👋 Recepción de participantes",
+    copy: "Hora receptiva para dar la bienvenida a los participantes",
+    time: "8:00 am",
+  },
+  {
+    title: "🤝 Cierre de Recepción",
+    copy: "Cierre de registro de asistencia de parejas",
+    time: "8:30 am",
+  },
+  {
+    title: "🥳 Inaguración del Torneo",
+    copy: "Ceremonia de Inaguración e indicaciones completas a los y las participantes",
+    time: "8:50 am",
+  },
+  {
+    title: "💪 Inicio de Fase de Grupos ",
+    copy: "Inicia la fase de grupos a doble eliminación",
+    time: "9:00 am",
+  },
+  {
+    title: "🎾 Inicio de Fase Eliminatoria",
+    copy: "Inicio a la recta final, fase eliminatoria (8vos, 4tos, semifinales)",
+    time: "3:00 pm",
+  },
+  {
+    title: "🎉 Gran Final del Torneo ",
+    copy: "Damos paso a la gran final",
+    time: "5:30 pm",
+  },
+];
+---
+
+<section class="mt-40 mb-40" id="agenda">
+  <Container class:list={["max-w-7xl"]}>
+    <hgroup class="mb-16">
+      <h2
+        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-r from-white to-red-500/95 text-transparent bg-clip-text sm:text-5xl"
+      >
+        Agenda
+      </h2>
+      <p class="mt-4 text-center text-base md:text-lg text-gray-200">
+        Prepárate para <strong class=""
+          >la segunda edición del Torneo de las Fresas</strong
+        > la competencia de frontenis que te hará sudar y disfrutar al máximo. A
+        continuación, te presentamos las reglas oficiales para que puedas ir calentando
+        y preparando tu estrategia ganadora:
+      </p>
+    </hgroup>
+
+    <!-- Agenda items -->
+    <div class="grid gap-y-14 justify-center px-5">
+      {
+        agenda.map((item) => {
+          return (
+            <CardTime title={item.title} time={item.time} copy={item.copy} />
+          );
+        })
+      }
+    </div>
+  </Container>
+</section>
