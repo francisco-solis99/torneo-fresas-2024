@@ -8,30 +8,39 @@ import PhaseIcon from "@/components/icons/Phase.astro";
 import CardContainer from "@/components/CardContainer.astro";
 ---
 
-<section class="mt-40 mb-40">
+<section class="mt-40 mb-40" id="reglas">
   <Container class:list={["max-w-7xl"]}>
     <hgroup class="mb-16">
-      <h2 class="text-6xl font-bold text-center">Asi se jugará</h2>
-      <p class="mt-4 text-center">
-        With Figma's most powerful features optimised for Cabana, say goodbye to
-        the old way of working, and hello to a new and improved workflow.
+      <h2
+        class="py-2 text-3xl font-bold text-center bg-gradient-to-t from-white to-red-500/95 text-transparent bg-clip-text sm:text-4xl lg:text-5xl"
+      >
+        Asi se jugará
+      </h2>
+      <p class="mt-4 text-center text-base md:text-lg">
+        Prepárate para <strong class=""
+          >la segunda edición del Torneo de las Fresas</strong
+        > la competencia de frontenis que te hará sudar y disfrutar al máximo. A
+        continuación, te presentamos las reglas oficiales para que puedas ir calentando
+        y preparando tu estrategia ganadora:
       </p>
     </hgroup>
-    <div class="grid grid-cols-4 grid-rows-[repeat(3,auto)] gap-7">
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 md:grid-rows-[repeat(3,auto)] gap-7 lg:gap-6"
+    >
       <CardContainer
         class:list={[
-          "col-span-2 row-span-2 text-lg flex flex-col gap-y-5 justify-center",
+          "col-span-2 sm:row-span-2 md:text-lg flex flex-col gap-y-5 justify-center",
         ]}
       >
         <span class="flex justify-center text-primary">
-          <MoneyIcon />
+          <MoneyIcon class:list={["w-36 h-36 md:w-auto md:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">Inscripciones y dinamica</h3>
           <ul class="mt-3 leading-relaxed list-disc pl-5">
             <li>
               El costo de la inscripción por persona es de <strong
-                class="text-primary">$300 MXN</strong
+                class="text-primary underline w-">$350 MXN</strong
               >
             </li>
             <li>El número de parejas participantes sera de 36.</li>
@@ -42,9 +51,13 @@ import CardContainer from "@/components/CardContainer.astro";
           </ul>
         </div>
       </CardContainer>
-      <CardContainer class:list={["col-span-2 flex gap-x-3 items-center"]}>
+      <CardContainer
+        class:list={[
+          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col md:flex-row gap-x-3 gap-y-2 items-center",
+        ]}
+      >
         <span class="flex justify-center text-primary">
-          <RaquetIcon />
+          <RaquetIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">Canchas y pelota</h3>
@@ -57,7 +70,11 @@ import CardContainer from "@/components/CardContainer.astro";
           </ul>
         </div>
       </CardContainer>
-      <CardContainer class:list={["col-span-2 flex gap-x-3 items-center"]}>
+      <CardContainer
+        class:list={[
+          "col-span-2 sm:col-span-1 md:col-span-2 flex flex-col-reverse sm:flex-col md:flex-row gap-x-3 gap-y-2 items-center",
+        ]}
+      >
         <div>
           <h3 class="text-3xl font-bold">Consejos</h3>
           <ul class="mt-3 leading-relaxed list-disc pl-5">
@@ -73,12 +90,16 @@ import CardContainer from "@/components/CardContainer.astro";
           </ul>
         </div>
         <span class="flex justify-center text-primary">
-          <ShirtIcon />
+          <ShirtIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
         </span>
       </CardContainer>
-      <CardContainer class:list={["col-span-3 flex gap-x-3 items-center"]}>
+      <CardContainer
+        class:list={[
+          "col-span-2 xl:col-span-3 flex flex-col xl:flex-row gap-x-3 items-center",
+        ]}
+      >
         <span class="flex justify-center text-primary mb-6">
-          <PlayerIcon />
+          <PlayerIcon class:list={["w-36 h-36 md:w-auto md:h-auto"]} />
         </span>
         <div>
           <h3 class="text-3xl font-bold">El juego</h3>
@@ -104,12 +125,12 @@ import CardContainer from "@/components/CardContainer.astro";
           </ul>
         </div>
       </CardContainer>
-      <CardContainer class:list={[""]}>
+      <CardContainer class:list={["col-span-2 xl:col-span-1 self-start"]}>
         <span class="flex justify-center text-primary mb-6">
-          <PhaseIcon />
+          <PhaseIcon class:list={["w-28 h-28 lg:w-auto lg:h-auto"]} />
         </span>
         <div>
-          <h3 class="text-3xl font-bold ">Siguiente Fase</h3>
+          <h3 class="text-3xl font-bold">Siguiente Fase</h3>
           <ul class="mt-3 leading-relaxed list-disc pl-5">
             <li>
               Por sistema de doble eliminación, una pareja queda eliminada del

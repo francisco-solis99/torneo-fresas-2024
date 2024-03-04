@@ -4,7 +4,7 @@ import Container from "@/components/Container.astro";
 const navLinks = [
   {
     text: "Reglas",
-    href: "",
+    href: "#reglas",
   },
   {
     text: "Agenda",
@@ -23,15 +23,15 @@ const navLinks = [
 
 <header class="w-full">
   <Container>
-    <nav class="w-fit mx-auto">
+    <nav class="w-fit mx-auto hidden sm:block">
       <ul
         class="px-10 py-5 flex justify-center gap-x-12 border border-content rounded-full"
       >
         {
           navLinks.map((navLink) => {
             return (
-              <li class="font-bold lg:text-xl text-content opacity-75 hover:opacity-100 hover:drop-shadow-custom  transition-opacity">
-                <a href="" class="">
+              <li class="font-bold lg:text-lg text-content opacity-75 hover:opacity-100 hover:drop-shadow-custom transition-opacity">
+                <a href={navLink.href} class="">
                   {navLink.text}
                 </a>
               </li>
