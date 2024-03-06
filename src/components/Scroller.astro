@@ -1,15 +1,113 @@
 ---
 const { items } = Astro.props;
-
-console.log(items);
 ---
 
 <div class="scroller" data-direction="left" data-speed="slow">
   <ul class="tag-list scroller__inner">
     {
       items.map((item: any) => {
-        return <li>{item.text}</li>;
+        return (
+          <li class="flex items-center p-4 transition hover:saturate-200 hover:scale-125">
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={item.name}
+              class="inline-block"
+            >
+              <span class="sr-only">{item.name}</span>
+              <img
+                src={`/${item.image}`}
+                alt={item.name}
+                class="max-w-full w-32"
+                loading="lazy"
+              />
+            </a>
+          </li>
+        );
       })
     }
   </ul>
 </div>
+
+<style>
+  .scroller {
+    --gap-items: 1rem;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  .scroller__inner {
+    padding-block: 1rem;
+    display: flex;
+    gap: var(--gap-items);
+    flex-wrap: wrap;
+  }
+
+  /* Withh Animation */
+  .scroller[data-animated="true"] {
+    overflow: hidden;
+    mask: linear-gradient(
+      to right,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent
+    );
+  }
+
+  .scroller[data-animated="true"] .scroller__inner {
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: scroll var(--_animation-direction, forwards)
+      var(--_animation-speed, 25s) linear infinite;
+  }
+
+  .scroller[data-direction="right"] {
+    --_animation-direction: reverse;
+  }
+
+  .scroller[data-direction="left"] {
+    --_animation-direction: forwards;
+  }
+
+  .scroller[data-speed="slow"] {
+    --_animation-speed: 30s;
+  }
+
+  .scroller[data-speed="fast"] {
+    --_animation-speed: 15s;
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translateX(calc(-50% - (var(--gap-items) / 2)));
+    }
+  }
+</style>
+
+<script>
+  const scrollers = document.querySelectorAll(".scroller");
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    addAnimation();
+  }
+
+  function addAnimation() {
+    scrollers.forEach((scroller) => {
+      scroller.setAttribute("data-animated", true);
+
+      const scrollInner = scroller.querySelector(".scroller__inner");
+
+      const scrollContent = Array.from(scrollInner.children);
+
+      const scrollContentDuplicated = scrollContent.map((item) => {
+        const duplicatedItem = item.cloneNode(true);
+        duplicatedItem.setAttribute("aria-hidden", true);
+        return duplicatedItem;
+      });
+
+      scrollInner.append(...scrollContentDuplicated);
+    });
+  }
+</script>
