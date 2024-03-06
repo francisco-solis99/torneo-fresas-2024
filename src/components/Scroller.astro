@@ -1,0 +1,15 @@
+---
+const { items } = Astro.props;
+
+console.log(items);
+---
+
+<div class="scroller" data-direction="left" data-speed="slow">
+  <ul class="tag-list scroller__inner">
+    {
+      items.map((item: any) => {
+        return <li>{item.text}</li>;
+      })
+    }
+  </ul>
+</div>
