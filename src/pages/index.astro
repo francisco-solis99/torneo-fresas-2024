@@ -1,9 +1,42 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import NavBar from "@/components/NavBar.astro";
+import Hero from "@/components/Hero.astro";
+import Rules from "@/components/Rules.astro";
+import Agenda from "@/components/Agenda.astro";
+import Sponsors from "@/components/Sponsors.astro";
+import Awards from "@/components/Awards.astro";
+import Footer from "@/components/Footer.astro";
 ---
 
 <Layout title="Torneo de las Fresas 2024" description="Torneo de las Freasas">
-  <h1>Hello</h1>
+  <div class="layer__background min-h-screen relative">
+    <NavBar />
+    <Hero />
+  </div>
+  <Rules />
+  <Agenda />
+  <Sponsors />
+  <Awards />
+  <Footer />
 </Layout>
 
-<style></style>
+<style>
+  .layer__background::before {
+    --line: hsl(0 0% 95% / 0.2);
+    content: "";
+    display: block;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+        7vmin 7vmin,
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
+        7vmin;
+    top: 0;
+    -webkit-mask: linear-gradient(-15deg, transparent 30%, white);
+    mask: linear-gradient(0deg, transparent 15%, white);
+  }
+</style>
