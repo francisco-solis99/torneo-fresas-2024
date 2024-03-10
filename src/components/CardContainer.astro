@@ -4,7 +4,7 @@ const { class: className } = Astro.props;
 
 <article
   class:list={[
-    "layer__card relative px-8 py-6 rounded-3xl overflow-hidden",
+    "animation__revealing layer__card relative px-8 py-6 rounded-3xl overflow-hidden",
     className,
   ]}
 >
@@ -31,5 +31,27 @@ const { class: className } = Astro.props;
         rgba(255, 69, 69, 0.4),
         rgba(9, 9, 9, 0.95) 65%
       );
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      scale: 25%;
+    }
+    to {
+      opacity: 1;
+      scale: 100%;
+    }
+  }
+
+  .animation__revealing {
+    view-timeline-name: --revealing;
+    view-timeline-axis: block;
+
+    animation-timeline: --revealing;
+    animation-name: reveal;
+
+    animation-range: entry 15% cover 40%;
+    animation-fill-mode: both;
   }
 </style>
