@@ -36,11 +36,11 @@ const agenda = [
 ];
 ---
 
-<section class="mt-40 mb-40" id="agenda">
+<section class="my-36" id="agenda">
   <Container class:list={["max-w-7xl"]}>
     <hgroup class="mb-16">
       <h2
-        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-r from-white to-red-500/95 text-transparent bg-clip-text xs:text-5xl"
+        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-b from-neutral-200 to-red-300 text-transparent bg-clip-text xs:text-5xl"
       >
         Agenda
       </h2>
@@ -55,15 +55,54 @@ const agenda = [
       </p>
     </hgroup>
 
-    <!-- Agenda items -->
-    <div class="grid gap-y-14 justify-center px-5">
+    <!-- Agenda list items -->
+    <ul class="animation__scroll-in grid gap-y-8 justify-center px-5">
       {
-        agenda.map((item) => {
+        agenda.map((item, index) => {
           return (
-            <CardTime title={item.title} time={item.time} copy={item.copy} />
+            <li style={`--index: ${index + 1}`}>
+              <div class="backdrop-blur-sm">
+                <CardTime
+                  title={item.title}
+                  time={item.time}
+                  copy={item.copy}
+                />
+              </div>
+            </li>
           );
         })
       }
-    </div>
+    </ul>
   </Container>
 </section>
+
+<style define:vars={{ numItems: agenda.length }}>
+  .animation__scroll-in {
+    view-timeline-name: --scroll-in;
+  }
+
+  .animation__scroll-in > li {
+    --index0: calc(var(--index) - 1);
+    --reverse-index: calc(var(--numItems) - var(--index0));
+    --reverse-index0: calc(var(--reverse-index) - 1);
+    position: sticky;
+    top: 0;
+    padding-block-start: calc(var(--index) * 1rem);
+  }
+
+  .animation__scroll-in > li > div {
+    --start-range: calc(var(--index0) / var(--numcards) * 100%);
+    --end-range: calc(var(--index) / var(--numcards) * 100%);
+    animation: linear scale forwards;
+    animation-timeline: --scroll-in;
+    animation-range: exit-crossing var(--start-range) exit-crossing
+      var(--end-range);
+    will-change: transform;
+  }
+
+  @keyframes scale {
+    to {
+      transform: scale(calc(1.1 - calc(0.1 * var(--reverse-index))));
+    }
+  }
+</style>
