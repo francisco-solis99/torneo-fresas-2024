@@ -1,12 +1,13 @@
 ---
 import Container from "@/components/Container.astro";
+import BarChartAwards from "@/components/BarChartAwards.astro";
 ---
 
-<section class="mt-40 mb-40" id="premios">
+<section class="mt-24 mb-10" id="premios">
   <Container class:list={["max-w-7xl"]}>
     <hgroup class="mb-16">
       <h2
-        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-r from-white to-red-500/95 text-transparent bg-clip-text xs:text-5xl"
+        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-b from-neutral-200 to-red-300 text-transparent bg-clip-text xs:text-5xl"
       >
         Premios
       </h2>
@@ -18,5 +19,7 @@ import Container from "@/components/Container.astro";
         ello nos sentimos honrados de entregar los siguientes premios:
       </p>
     </hgroup>
+
+    <BarChartAwards />
   </Container>
 </section>
