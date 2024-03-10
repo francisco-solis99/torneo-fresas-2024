@@ -1,0 +1,34 @@
+---
+import Container from "./Container.astro";
+---
+
+<section class="mt-10 mb-32">
+  <Container class:list={["max-w-7xl"]}>
+    <hgroup class="mb-16">
+      <h2
+        class="py-2 text-4xl font-bold font-audioWide text-center bg-gradient-to-b from-neutral-200 to-red-300 text-transparent bg-clip-text xs:text-5xl"
+      >
+        Adquiere tu playera conmemorativa
+      </h2>
+    </hgroup>
+
+    <article class="flex justify-center gap-x-3">
+      <picture class="max-w-[500px] block">
+        <img
+          src="/shirt-light.webp"
+          class="max-w-full object-contain"
+          alt="Playera cinmemorativa del torneo version light"
+        />
+      </picture>
+      <aside>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum
+          nostrum modi excepturi quos vero itaque maxime, fugiat quasi rem rerum
+          explicabo voluptatibus at ipsam voluptas, consequatur atque optio
+          recusandae quas.
+        </p>
+        <a href="" rel="noopener norefer" target="_blank">Adquirir</a>
+      </aside>
+    </article>
+  </Container>
+</section>
