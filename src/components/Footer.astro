@@ -1,0 +1,34 @@
+---
+import Container from "./Container.astro";
+---
+
+<footer class="layer__background relative pt-4 pb-7">
+  <Container>
+    <div class="min-h-[40vh] flex justify-center">
+      <p class="text-xs self-end">
+        Felicidades a todos los participantes y un agradecimiento especial a
+        todos los que hacen posible el éxito del torneo.
+      </p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .layer__background::before {
+    --line: hsl(0 0% 95% / 0.2);
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+        7vmin 7vmin,
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
+        7vmin;
+    top: 0;
+    /* -webkit-mask: linear-gradient(-15deg, transparent 30%, white); */
+    mask: linear-gradient(180deg, transparent 15%, white);
+  }
+</style>
