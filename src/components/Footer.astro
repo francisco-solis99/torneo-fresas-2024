@@ -4,11 +4,40 @@ import Container from "./Container.astro";
 
 <footer class="layer__background relative pt-4 pb-7">
   <Container>
-    <div class="min-h-[40vh] flex justify-center">
-      <p class="text-xs self-end">
+    <div
+      class="min-h-[60vh] grid grid-rows-[1fr_auto_auto] gap-y-3 justify-items-center"
+    >
+      <p
+        class="pt-[20vh] mb-16 text-center font-audioWide text-xl max-w-4xl mx-auto"
+      >
         Felicidades a todos los participantes y un agradecimiento especial a
         todos los que hacen posible el éxito del torneo.
       </p>
+      <picture class="relative block max-w-[100px] md:max-w-[130px]">
+        <img
+          src="./tournament.webp"
+          loading="lazy"
+          class="absolute -z-10 top-2 blur-md"
+          alt="Raqueta con fresas salinedo de su red - Torneo de las Fresas 2024"
+        />
+        <img
+          src="./tournament.webp"
+          class=""
+          alt="Raqueta con fresas salinedo de su red - Torneo de las Fresas 2024"
+        />
+      </picture>
+      <div class="text-center">
+        <p class="mb-1.5">
+          Si quieres contactar escribe al numero <a
+            href="https://wa.me/524622883931"
+            target="_blank"
+            rel="noopener norefer"
+            aria-label="Chat en WhatsApp"
+            class="font-bold drop-shadow-custom">462-288-3931</a
+          >
+        </p>
+        <span class="text-xs"> Desarrollado con ❤️ por Francisco Solis</span>
+      </div>
     </div>
   </Container>
 </footer>
