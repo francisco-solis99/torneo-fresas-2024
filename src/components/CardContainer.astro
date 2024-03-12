@@ -32,26 +32,4 @@ const { class: className } = Astro.props;
         rgba(9, 9, 9, 0.95) 65%
       );
   }
-
-  @keyframes reveal {
-    from {
-      opacity: 0;
-      scale: 25%;
-    }
-    to {
-      opacity: 1;
-      scale: 100%;
-    }
-  }
-
-  .animation__revealing {
-    view-timeline-name: --revealing;
-    view-timeline-axis: block;
-
-    animation-timeline: --revealing;
-    animation-name: reveal;
-
-    animation-range: entry 15% cover 40%;
-    animation-fill-mode: both;
-  }
 </style>
