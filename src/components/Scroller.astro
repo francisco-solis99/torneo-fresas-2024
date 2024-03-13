@@ -98,12 +98,13 @@ const { items } = Astro.props;
       scroller.setAttribute("data-animated", "true");
 
       const scrollInner = scroller.querySelector(".scroller__inner");
+      if (!scrollInner) return;
 
       const scrollContent = Array.from(scrollInner.children);
 
       const scrollContentDuplicated = scrollContent.map((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        duplicatedItem.setAttribute("aria-hidden", true);
+        const duplicatedItem = item.cloneNode(true) as HTMLElement;
+        duplicatedItem.setAttribute("aria-hidden", "true");
         return duplicatedItem;
       });
 

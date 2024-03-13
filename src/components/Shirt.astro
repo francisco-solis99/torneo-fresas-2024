@@ -92,9 +92,10 @@ import Container from "./Container.astro";
 
   shirtsGalleryBtns.forEach((btn) =>
     btn.addEventListener("click", () => {
-      const imgEl = btn.querySelector("img");
+      const imgEl = btn.querySelector("img") as HTMLImageElement;
       if (!imgEl) return;
       const imgSrc = imgEl.getAttribute("src");
+      if (!imgSrc) return;
       mainShirt?.setAttribute("src", imgSrc);
       deactivatedShirts();
     })
