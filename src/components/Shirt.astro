@@ -16,7 +16,9 @@ import Container from "./Container.astro";
       class="animation__revealing grid md:grid-cols-[auto_1fr] gap-y-10 gap-x-12 justify-center"
     >
       <div class="">
-        <picture class="mx-auto max-w-[320px] lg:max-w-[400px] block">
+        <picture
+          class="mx-auto aspect-square max-w-[320px] lg:max-w-[400px] block"
+        >
           <img
             src="/shirt-dark.webp"
             class="shirt__main max-w-full object-contain"
@@ -30,7 +32,7 @@ import Container from "./Container.astro";
                 src="/shirt-dark.webp"
                 loading="lazy"
                 class="max-w-full object-contain"
-                alt="Playera cinmemorativa del torneo version light"
+                alt="Playera conmemorativa del torneo version light"
               />
             </picture>
           </button>
@@ -40,7 +42,17 @@ import Container from "./Container.astro";
                 src="/shirt-light.webp"
                 loading="lazy"
                 class="max-w-full object-contain grayscale"
-                alt="Playera cinmemorativa del torneo version light"
+                alt="Playera conmemorativa del torneo version light"
+              />
+            </picture>
+          </button>
+          <button class="shirt__variant-btn">
+            <picture class="max-w-[80px] block">
+              <img
+                src="/sizes.webp"
+                loading="lazy"
+                class="max-w-full object-contain grayscale"
+                alt="Tallas disponibles para la playeras"
               />
             </picture>
           </button>
@@ -59,14 +71,14 @@ import Container from "./Container.astro";
         </p>
         <div class="inline-flex flex-col">
           <a
-            href=""
+            href="https://wa.me/524622883931"
             aria-disabled="true"
-            aria-label="adquirir la playera del torneo, se abrirá en una nueva pestaña"
+            aria-label="solicitar la playera del torneo, se abrirá en una nueva pestaña"
             class="w-fit bg-gray-600 text-gray-400 px-7 py-3 text-lg inline-block border border-black rounded-md pointer-events-none"
             rel="noopener norefer"
-            target="_blank">Adquirir</a
+            target="_blank">Solicitar</a
           >
-          <span class="mt-1 text-sm text-red-200 self-center">Muy pronto</span>
+          <!-- <span class="mt-1 text-sm text-red-200 self-center">Muy pronto</span> -->
         </div>
       </aside>
     </article>
@@ -77,27 +89,29 @@ import Container from "./Container.astro";
   const shirtsGalleryBtns = document.querySelectorAll(".shirt__variant-btn");
   const mainShirt = document.querySelector(".shirt__main");
 
-  const deactivatedShirts = () => {
-    shirtsGalleryBtns.forEach((shirtBtn) => {
+  const deactivatedShirts = (indexRefer: number) => {
+    shirtsGalleryBtns.forEach((shirtBtn, index) => {
       const miniImg = shirtBtn.querySelector("img");
       if (shirtBtn.getAttribute("disabled")) {
         miniImg?.classList.add("grayscale");
         shirtBtn.removeAttribute("disabled");
         return;
       }
-      miniImg?.classList.remove("grayscale");
-      shirtBtn.setAttribute("disabled", "true");
+      if (indexRefer === index) {
+        miniImg?.classList.remove("grayscale");
+        shirtBtn.setAttribute("disabled", "true");
+      }
     });
   };
 
-  shirtsGalleryBtns.forEach((btn) =>
+  shirtsGalleryBtns.forEach((btn, index) =>
     btn.addEventListener("click", () => {
       const imgEl = btn.querySelector("img") as HTMLImageElement;
       if (!imgEl) return;
       const imgSrc = imgEl.getAttribute("src");
       if (!imgSrc) return;
       mainShirt?.setAttribute("src", imgSrc);
-      deactivatedShirts();
+      deactivatedShirts(index);
     })
   );
 </script>
