@@ -1,7 +1,7 @@
 ---
 import "@fontsource-variable/dm-sans";
 import "@fontsource/audiowide";
-
+import "@/styles/globals.css";
 interface Props {
   title: string;
   description: string;
@@ -17,7 +17,7 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href="" />
+    <link rel="canonical" href="https://torneo-fresas-2024.vercel.app/" />
     <meta
       name="keywords"
       content="torneo, frontenis, torneo de las fresas, raqueta"
@@ -49,77 +49,3 @@ const { title, description } = Astro.props;
     </div>
   </body>
 </html>
-<style is:global>
-  :root {
-    --color-primary: #ff4545;
-    --color-secondary: #ffcf40;
-    --color-accent: #881414;
-    --color-background: #111112;
-    --color-content: #fff;
-  }
-
-  html {
-    font-family: "DM Sans Variable", sans-serif;
-    scroll-behavior: smooth;
-    background: var(--color-background);
-    color: var(--color-content);
-  }
-
-  body {
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
-
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
-  }
-
-  p {
-    text-wrap: pretty;
-  }
-
-  textarea {
-    -webkit-form-sizing: content;
-    -moz-form-sizing: content;
-    form-sizing: content;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    text-wrap: balance;
-  }
-
-  @keyframes reveal {
-    from {
-      opacity: 0;
-      scale: 25%;
-    }
-    to {
-      opacity: 1;
-      scale: 100%;
-    }
-  }
-
-  .animation__revealing {
-    view-timeline-name: --revealing;
-    view-timeline-axis: block;
-
-    animation-timeline: --revealing;
-    animation-name: reveal;
-
-    animation-range: entry 15% cover 40%;
-    animation-fill-mode: both;
-  }
-</style>
