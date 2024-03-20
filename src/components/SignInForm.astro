@@ -1,0 +1,65 @@
+---
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+---
+
+<Card className="drop-shadow-[0_2px_10px_rgba(255,255,255,0.25)]">
+  <CardHeader>
+    <h1
+      class="font-audioWide text-3xl font-semibold leading-none tracking-tight"
+    >
+      Sign In
+    </h1>
+    <CardDescription>
+      Ingresa tus credenciales para acceder al dashboard y funciones especiales
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-2">
+    <form id="sign-in-form" class="grid gap-y-2 max-w-xl mx-auto">
+      <label for="username">
+        <span>Username</span>
+        <Input type="text" id="username" name="username" />
+      </label>
+      <label for="password">
+        <span>Password</span>
+        <Input type="password" id="password" name="password" />
+      </label>
+    </form>
+  </CardContent>
+  <CardFooter className="flex flex-col justify-center">
+    <p id="form-error" class="mb-2.5 text-red-400"></p>
+    <Button
+      type="submit"
+      form="sign-in-form"
+      size="lg"
+      className="hover:drop-shadow-[0_10px_8px_rgba(255,69,69,0.25)] transition-[filter]"
+      >Login</Button
+    >
+  </CardFooter>
+</Card>
+
+<script>
+  const errorMessageElement = document.getElementById("form-error")!;
+  const signInForm = document.getElementById("sign-in-form") as HTMLFormElement;
+
+  signInForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMessageElement.innerText = "";
+    const response = await fetch("/api/login", {
+      method: "POST",
+      body: new FormData(signInForm),
+    });
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      errorMessageElement.innerText = (await response.json()).error;
+    }
+  });
+</script>
