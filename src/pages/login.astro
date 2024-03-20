@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SignInForm from "@/components/SignInForm.astro";
+
+const user = Astro.locals.user;
+if (user) {
+  // if user exist redirect to dashboard
+  return Astro.redirect("/");
+}
+---
+
+<Layout
+  title="Login - Torneo de las Fresas 2024"
+  description="Login Torneo de las Freasas"
+>
+  <div class="layer__background relative">
+    <main class="grid items-center max-w-7xl mx-auto min-h-screen">
+      <div class="mx-auto">
+        <SignInForm />
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .layer__background::before {
+    --line: hsl(0 0% 95% / 0.2);
+    content: "";
+    display: block;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+        7vmin 7vmin,
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
+        7vmin;
+    top: 0;
+    -webkit-mask: linear-gradient(0deg, transparent 15%, white);
+    mask: linear-gradient(0deg, transparent 15%, white);
+  }
+</style>
