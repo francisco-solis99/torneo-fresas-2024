@@ -1,0 +1,214 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import Group from "@/components/Group.astro";
+
+const groups = [
+  {
+    name: "A",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+  {
+    name: "B",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+  {
+    name: "C",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+  {
+    name: "D",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+  {
+    name: "E",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+  {
+    name: "F",
+    duosList: [
+      {
+        player1: {
+          name: "Dak Prescott",
+        },
+        player2: {
+          name: "Ceedee Lamb",
+        },
+      },
+      {
+        player1: {
+          name: "Lamar Jackson",
+        },
+        player2: {
+          name: "Mark Andrews",
+        },
+      },
+      {
+        player1: {
+          name: "Patrick Mahomes",
+        },
+        player2: {
+          name: "Travis Kelce",
+        },
+      },
+    ],
+  },
+];
+---
+
+<Layout title="Torneo de las Fresas 2024" description="Torneo de las Fresas">
+  <div>
+    <header
+      class="grid-pattern-background relative py-12"
+      style="--_num-lines: 5vmin; --_heigh-pattern: 40vh;"
+    >
+      <div
+        class="absolute left-1/2 top-1/2 h-80 w-full -translate-x-1/2 -translate-y-3/4 rounded-[100%] opacity-70 blur-[60px] bg-[#360b0b] -z-10"
+      >
+      </div>
+      <h1
+        class="-skew-y-6 font-audioWide px-5 text-5xl md:text-6xl text-center"
+      >
+        Fase de Grupos
+      </h1>
+    </header>
+    <Container class:list={["max-w-7xl"]}>
+      <main class="px-3 sm:px-7 mt:px-10 mt-14 mb-32 lg:mt-20 lg:mb-40">
+        <section
+          class="grid md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20 md:gap-y-16"
+        >
+          {
+            groups.map((group) => {
+              return <Group name={group.name} listDuos={group.duosList} />;
+            })
+          }
+        </section>
+      </main>
+    </Container>
+  </div>
+</Layout>
