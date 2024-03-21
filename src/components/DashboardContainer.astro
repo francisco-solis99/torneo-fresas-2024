@@ -1,0 +1,57 @@
+---
+import { PencilLine, Users, ArrowBigRightDash } from "lucide-react";
+const menuDashboard = [
+  {
+    name: "Registro",
+    href: "/dashboard/registro",
+    icon: PencilLine,
+  },
+  {
+    name: "Parejas",
+    href: "/dashboard/registro",
+    icon: Users,
+  },
+  {
+    name: "Fase 1",
+    href: "/dashboard/fase1",
+    icon: ArrowBigRightDash,
+  },
+  {
+    name: "Fase 2",
+    href: "#",
+    icon: ArrowBigRightDash,
+  },
+  {
+    name: "Fase 3",
+    href: "#",
+    icon: ArrowBigRightDash,
+  },
+];
+---
+
+<div class="relative min-h-screen grid grid-cols-[_0.15fr_1fr]">
+  <aside
+    class="sticky top-0 py-4 px-10 flex items-center bg-card border-r border-stone-700 h-screen"
+  >
+    <nav>
+      <ul class="grid gap-y-5">
+        {
+          menuDashboard.map((item) => {
+            const { href, name, icon: Icon } = item;
+            return (
+              <li class="inline-flex items-center gap-x-1.5">
+                <span>
+                  <Icon className="w-5 aspect-square" />
+                </span>
+                <a href={href}>{name}</a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </aside>
+  <main class="max-w-8xl mx-auto w-full py-5 px-8 md:px-12 lg:px-20">
+    <slot />
+  </main>
+</div>

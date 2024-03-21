@@ -1,0 +1,67 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import DashboardContainer from "@/components/DashboardContainer.astro";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+---
+
+<Layout title="Dashboard" description="Dashboard Fase 1 Torneo de las Freasas">
+  <DashboardContainer>
+    <div class="h-full flex flex-col justify-center">
+      <h1 class="mb-4 text-4xl font-audioWide font-bold">
+        Dashboard - Registro
+      </h1>
+      <Card className="bg-card max-w-4xl">
+        <CardHeader>
+          <h2 class="text-3xl font-semibold leading-none tracking-tight">
+            Registro de parejas
+          </h2>
+          <CardDescription>
+            Registra a las parejas participantes del torneo
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <form id="sign-in-form" class="grid gap-y-2">
+            <label for="player1">
+              <span class="mb-2 inline-block">Nombre del jugador 1</span>
+              <Input
+                type="text"
+                id="player1"
+                name="player1"
+                placeholder="ex. Rafael Nadal"
+                className="border-gray-500"
+              />
+            </label>
+            <label for="player2">
+              <span class="mb-2 inline-block">Nombre del jugador 2</span>
+              <Input
+                type="text"
+                id="player2"
+                name="player2"
+                placeholder="ex. Roger Federer"
+                className="border-gray-500"
+              />
+            </label>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col justify-center">
+          <p id="form-error" class="mb-2.5 text-red-400"></p>
+          <Button
+            type="submit"
+            form="sign-in-form"
+            size="lg"
+            className="hover:drop-shadow-[0_10px_8px_rgba(255,69,69,0.25)] transition-[filter]"
+            >Registrar</Button
+          >
+        </CardFooter>
+      </Card>
+    </div>
+  </DashboardContainer>
+</Layout>
