@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/Container.astro";
+import Match from "@/components/Match.astro";
 
 export function getStaticPaths() {
   return [
@@ -36,6 +37,12 @@ const { group } = Astro.params;
     </header>
   </div>
   <Container class:list={["max-w-7xl"]}>
-    <main class="px-3 sm:px-7 mt:px-10 mt-14 mb-32 lg:mt-20 lg:mb-40"></main>
+    <main class="px-3 sm:px-7 mt:px-10 mt-14 mb-32 lg:mt-20 lg:mb-40">
+      <div class="grid grid-cols-3">
+        <Match />
+        <Match />
+        <Match />
+      </div>
+    </main>
   </Container>
 </Layout>
