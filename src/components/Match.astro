@@ -1,0 +1,38 @@
+---
+import MatchDialog from "@/components/MatchDialog";
+---
+
+<article
+  class="relative w-fit flex flex-col items-center bg-gradient-to-b from-black bg-stone-800 border rounded-sm"
+>
+  <MatchDialog client:load />
+  <div
+    class="absolute inset-0 h-full w-full bg-[radial-gradient(#ffffff35_1px,transparent_1px)] [background-size:14px_14px]"
+  >
+  </div>
+  <!-- Duos -->
+  <div
+    class="h-full items-center p-3 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+  >
+    <div class="flex">
+      <p>Dak Prescott</p>
+      <span class="mx-1">/</span>
+      <p>Ceedee Lamb</p>
+    </div>
+    <span class="inline-block text-lg ml-2 justify-self-end">0</span>
+  </div>
+  <span
+    class="absolute top-1/2 -translate-y-1/2 z-10 backdrop-blur-sm font-audioWide text-lg -skew-y-3 inline-block"
+    >VS</span
+  >
+  <div
+    class="h-full items-center p-3 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+  >
+    <div class="flex">
+      <p>Jalen Hurts</p>
+      <span class="mx-1">/</span>
+      <p>AJ Brown</p>
+    </div>
+    <span class="inline-block text-lg ml-2 justify-self-end">0</span>
+  </div>
+</article>
