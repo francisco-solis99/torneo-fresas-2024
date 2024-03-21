@@ -2,6 +2,8 @@
 import "@fontsource-variable/dm-sans";
 import "@fontsource/audiowide";
 import "@/styles/globals.css";
+import { ViewTransitions } from "astro:transitions";
+
 interface Props {
   title: string;
   description: string;
@@ -42,6 +44,7 @@ const { title, description } = Astro.props;
     <meta name="robots" content="index, follow" />
     <meta name="googlebot" content="index, follow" />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
     <div class="min-w-[300px] max-w-[2440px]">
