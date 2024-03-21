@@ -30,6 +30,8 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 72.2% 50.6%;
+    --line: hsl(0 0% 95% / 0.2);
+
 
     --radius: 0.5rem;
   }
@@ -41,6 +43,7 @@
     color: var(--color-content);
   }
 
+  /* ------------------ Reset CSS ------------------------*/
   body {
     min-height: 100vh;
     min-height: 100dvh;
@@ -77,6 +80,30 @@
     text-wrap: balance;
   }
 
+  /* ------------------ Custom global class Css ------------------------*/
+  .grid-pattern-background {
+    --_heigh-pattern: 100vh;
+    --_num-lines: 5vmin;
+    --_degrees-mask: 0deg;
+  }
+
+  .grid-pattern-background::before {
+    content: "";
+    display: block;
+    height: var(--_heigh-pattern);
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+      var(--_num-lines) var(--_num-lines),
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / var(--_num-lines) var(--_num-lines);
+    top: 0;
+    -webkit-mask: linear-gradient(var(--_degrees-mask), transparent 15%, white);
+    mask: linear-gradient(var(--_degrees-mask), transparent 15%, white);
+  }
+
+  /* ------------------ Animations CSS ------------------------*/
   @keyframes reveal {
     from {
       opacity: 0;

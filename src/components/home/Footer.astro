@@ -2,7 +2,10 @@
 import Container from "../Container.astro";
 ---
 
-<footer class="layer__background relative pt-4 pb-7">
+<footer
+  class="grid-pattern-background relative pt-4 pb-7"
+  style="--_num-lines: 7vmin; --_degrees-mask: 180deg; --_heigh-pattern: 100%;"
+>
   <Container>
     <div
       class="min-h-[60vh] grid grid-rows-[1fr_auto_auto] gap-y-3 justify-items-center"
@@ -41,23 +44,3 @@ import Container from "../Container.astro";
     </div>
   </Container>
 </footer>
-
-<style>
-  .layer__background::before {
-    --line: hsl(0 0% 95% / 0.2);
-    content: "";
-    display: block;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    z-index: -1;
-    background:
-      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
-        7vmin 7vmin,
-      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
-        7vmin;
-    top: 0;
-    /* -webkit-mask: linear-gradient(-15deg, transparent 30%, white); */
-    mask: linear-gradient(180deg, transparent 15%, white);
-  }
-</style>

@@ -11,7 +11,10 @@ import Footer from "@/components/home/Footer.astro";
 ---
 
 <Layout title="Torneo de las Fresas 2024" description="Torneo de las Freasas">
-  <div class="layer__background min-h-screen relative">
+  <div
+    class="grid-pattern-background min-h-screen relative"
+    style="--_num-lines: 7vmin;"
+  >
     <NavBar />
     <Hero />
   </div>
@@ -22,23 +25,3 @@ import Footer from "@/components/home/Footer.astro";
   <Sponsors />
   <Footer />
 </Layout>
-
-<style>
-  .layer__background::before {
-    --line: hsl(0 0% 95% / 0.2);
-    content: "";
-    display: block;
-    height: 100vh;
-    width: 100%;
-    position: absolute;
-    z-index: -1;
-    background:
-      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
-        7vmin 7vmin,
-      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
-        7vmin;
-    top: 0;
-    -webkit-mask: linear-gradient(0deg, transparent 15%, white);
-    mask: linear-gradient(0deg, transparent 15%, white);
-  }
-</style>
