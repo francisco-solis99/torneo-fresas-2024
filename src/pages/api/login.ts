@@ -33,9 +33,8 @@ export async function POST(context: APIContext): Promise<Response> {
 
   // Valid if exist that user to make a login
   const existingUser = db
-    .prepare("SELECT * FROM user WHERE username = ?")
+    .prepare("SELECT * FROM users WHERE username = ?")
     .get(username) as DatabaseUser | undefined;
-
   if (!existingUser) {
     return new Response(
       JSON.stringify({
