@@ -1,19 +1,27 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+import DashboadLayout from "@/layouts/DashboardLayout.astro";
 import DashboardContainer from "@/components/DashboardContainer.astro";
 import DuosTable from "@/components/DuosTable";
+import Loader from "@/components/Loader.astro";
 ---
 
-<Layout
+<DashboadLayout
   title="Dashboard - Parejas"
   description="Parejas para el Torneo de las Fresas"
 >
   <DashboardContainer>
     <div class="h-full flex flex-col justify-center">
-      <h1 class="mb-4 text-4xl font-audioWide font-bold">
+      <h1 class="mb-4 text-2xl md:text-4xl font-audioWide font-bold">
         Dashboard - Parejas
       </h1>
-      <DuosTable client:load />
+      <DuosTable client:load>
+        <Loader slot="loader" />
+      </DuosTable>
     </div>
   </DashboardContainer>
-</Layout>
+</DashboadLayout>
