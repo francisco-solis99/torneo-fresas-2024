@@ -8,6 +8,16 @@ export interface DatabaseUser {
   username: string;
   hashedPassword: string;
 }
+export interface DatabaseGroup {
+  id: number;
+  name: string;
+}
+export interface DatabaseDuo {
+  id: number;
+  player1: string;
+  player2: string;
+  groupId?: number;
+}
 
 //create the sqlite DB
 export const db = new sqlite("app.sqlite");
@@ -22,9 +32,27 @@ db.exec(`CREATE TABLE IF NOT EXISTS user (
 // Create a table with sessions with a relation to users table
 db.exec(`CREATE TABLE IF NOT EXISTS session (
   id TEXT NOT NULL PRIMARY KEY,
-  expires_at INTEGER NOT NULL,
   user_id TEXT NOT NULL,
+  expires_at INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES user(id)
+)`);
+
+// Group
+db.exec(`CREATE TABLE IF NOT EXISTS groups (
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+)`);
+
+// Duo
+db.exec(`CREATE TABLE IF NOT EXISTS duos (
+  id INTEGER NOT NULL PRIMARY KEY,
+  player1 TEXT NOT NULL UNIQUE,
+  player2 TEXT NOT NULL UNIQUE,
+  group_id INTEGER,
+  FOREIGN KEY (group_id)
+    REFERENCES groups (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION
 )`);
 
 // Seeds
