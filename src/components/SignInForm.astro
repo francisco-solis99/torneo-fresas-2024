@@ -25,11 +25,11 @@ import {
     <form id="sign-in-form" class="grid gap-y-2 max-w-xl mx-auto">
       <label for="username">
         <span>Username</span>
-        <Input type="text" id="username" name="username" />
+        <Input type="text" id="username" name="username" required />
       </label>
       <label for="password">
         <span>Password</span>
-        <Input type="password" id="password" name="password" />
+        <Input type="password" id="password" name="password" required />
       </label>
     </form>
   </CardContent>
@@ -57,7 +57,7 @@ import {
       body: new FormData(signInForm),
     });
     if (response.ok) {
-      window.location.href = "/";
+      window.location.href = "/dashboard/registro";
     } else {
       errorMessageElement.innerText = (await response.json()).error;
     }
