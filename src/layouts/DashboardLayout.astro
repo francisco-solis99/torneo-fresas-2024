@@ -1,0 +1,52 @@
+---
+import "@fontsource-variable/dm-sans";
+import "@fontsource/audiowide";
+import "@/styles/globals.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://torneo-fresas-2024.vercel.app/" />
+    <meta
+      name="keywords"
+      content="torneo, frontenis, torneo de las fresas, raqueta"
+    />
+
+    <!-- meta tags  -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta name="twitter:site" content="@" /> -->
+    <!-- <meta name="twitter:creator" content="@" /> -->
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/TF2024.webp" />
+
+    <meta name="og:image" content="/TF2024.webp" />
+    <meta name="og:title" content={title} />
+    <meta name="og:description" content={description} />
+    <meta name="og:url" content="https://torneo-fresas-2024.vercel.app/" />
+    <meta name="og:site_name" content="Torneo de las Fresas 2024" />
+    <meta name="og:type" content="website" />
+    <meta name="og:locale" content="es_MX" />
+
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="min-w-[300px] max-w-[2440px]">
+      <slot />
+    </div>
+  </body>
+</html>

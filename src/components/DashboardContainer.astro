@@ -1,6 +1,15 @@
 ---
 import { PencilLine, Users, ArrowBigRightDash } from "lucide-react";
 import { Toaster } from "sonner";
+import { Button } from "@/components/ui/button";
+
+const session = Astro.locals.session;
+if (!session) {
+  console.log("que pedo");
+  return Astro.redirect("/login");
+}
+
+const sessionId = session.id;
 
 const menuDashboard = [
   {
@@ -32,9 +41,9 @@ const menuDashboard = [
 ---
 
 <>
-  <div class="relative min-h-screen grid grid-cols-[_0.15fr_1fr]">
+  <div class="relative min-h-screen grid xs:grid-cols-[_0.15fr_1fr]">
     <aside
-      class="sticky top-0 py-4 px-10 flex items-center bg-card border-r border-stone-700 h-screen"
+      class="relative xs:sticky top-0 py-4 px-10 flex items-center bg-card border-r border-stone-700 h-screen"
     >
       <nav>
         <ul class="grid gap-y-5">
@@ -52,11 +61,39 @@ const menuDashboard = [
             })
           }
         </ul>
+        <form id="form-sign-out">
+          <Button
+            type="submit"
+            size={"sm"}
+            variant={"outline"}
+            className="absolute bottom-10 hover:bg-primary"
+            >Cerrar sesión</Button
+          >
+        </form>
       </nav>
     </aside>
     <main class="max-w-8xl mx-auto w-full py-5 px-8 md:px-12 lg:px-20">
       <slot />
     </main>
+    <Toaster client:load />
   </div>
-  <Toaster client:idle />
 </>
+
+<script is:inline define:vars={{ sessionId }}>
+  if (!sessionId || window.localStorage.getItem("TF2024")) {
+    return;
+  }
+  window.localStorage.setItem("TF2024", sessionId);
+</script>
+
+<script>
+  const logOutForm = document.getElementById("form-sign-out");
+  logOutForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+    window.localStorage.removeItem("TF2024");
+    window.location.href = "/login";
+  });
+</script>
