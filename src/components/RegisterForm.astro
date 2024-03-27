@@ -1,0 +1,103 @@
+---
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+---
+
+<Card className="bg-card max-w-4xl">
+  <CardHeader>
+    <h2 class="text-3xl font-semibold leading-none tracking-tight">
+      Registro de parejas
+    </h2>
+    <CardDescription>
+      Registra a las parejas participantes del torneo
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-2">
+    <form id="register-duo-form" class="grid gap-y-2">
+      <label for="player1">
+        <span class="mb-2 inline-block">Nombre del jugador 1</span>
+        <Input
+          type="text"
+          id="player1"
+          name="player1"
+          placeholder="ex. Rafael Nadal"
+          className="border-gray-500"
+          required
+          maxLength={45}
+        />
+      </label>
+      <label for="player2">
+        <span class="mb-2 inline-block">Nombre del jugador 2</span>
+        <Input
+          type="text"
+          id="player2"
+          name="player2"
+          placeholder="ex. Roger Federer"
+          className="border-gray-500"
+          required
+          maxLength={45}
+        />
+      </label>
+    </form>
+  </CardContent>
+  <CardFooter className="flex flex-col justify-center">
+    <p id="form-error" class="mb-2.5 text-red-400"></p>
+    <Button
+      type="submit"
+      form="register-duo-form"
+      size="lg"
+      className="hover:drop-shadow-[0_10px_8px_rgba(255,69,69,0.25)] transition-[filter]"
+      >Registrar</Button
+    >
+  </CardFooter>
+</Card>
+
+<script>
+  import { toast } from "sonner";
+
+  const errorMessageElement = document.getElementById("form-error")!;
+  const registerForm = document.getElementById(
+    "register-duo-form"
+  ) as HTMLFormElement;
+
+  const handlerRegisterSubmit = async () => {
+    const entriesRegisterFormData = Object.fromEntries(
+      new FormData(registerForm)
+    );
+    const registerData = JSON.stringify(entriesRegisterFormData);
+    try {
+      const sessionId = window.localStorage.getItem("TF2024");
+      const response = await fetch("/api/duos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionId}`,
+        },
+        body: registerData,
+      });
+      if (response.ok) {
+        console.log("exito");
+        registerForm.reset();
+        toast.success("Pareja registrada con exito");
+      } else {
+        errorMessageElement.innerText = (await response.json()).error;
+      }
+    } catch (error) {
+      toast.error("Error al tratar de registrar pareja");
+    }
+  };
+
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMessageElement.innerText = "";
+
+    await handlerRegisterSubmit();
+  });
+</script>
