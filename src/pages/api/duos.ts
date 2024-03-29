@@ -5,7 +5,15 @@ import type { DatabaseDuo } from "@/lib/db";
 
 export const GET: APIRoute = async ({ request }) => {
   try {
-    const allDuos = db.prepare("SELECT * from duos").all();
+    const allDuos = db
+      .prepare(
+        `
+    SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
+      FROM duos
+      LEFT JOIN groups ON groups.id = duos.group_id
+    `
+      )
+      .all();
 
     return new Response(
       JSON.stringify({
@@ -195,9 +203,14 @@ export const PATCH: APIRoute = async ({ request }) => {
   // update the duo
   try {
     const query = db.prepare(
-      `UPDATE duos SET player1 = ?, player2 = ? WHERE id = ?`
+      `UPDATE duos SET player1 = ?, player2 = ?, group_id = ? WHERE id = ?`
     );
-    query.run(dataToUpdate.player1, dataToUpdate.player2, idDuoToUpdate);
+    query.run(
+      dataToUpdate.player1,
+      dataToUpdate.player2,
+      dataToUpdate.group_id,
+      idDuoToUpdate
+    );
     return new Response(
       JSON.stringify({
         message: "Pareja actualizada exiosamente",
@@ -251,7 +264,7 @@ function validateDuoData(duoData: DatabaseDuo) {
 
   // Correct validation
   return {
-    errorMessage: ``,
+    errorMessage: null,
     validated: true,
   };
 }
