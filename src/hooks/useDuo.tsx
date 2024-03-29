@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
 
-import type { DatabaseDuo } from "@/lib/db";
+import type { DuoTable } from "@/lib/types";
 
 export function useDuo() {
-  const [duos, setDuos] = useState<DatabaseDuo[] | []>([])
+  const [duos, setDuos] = useState<DuoTable[] | []>([])
   const [loading, setLoading] = useState<Boolean| null>(null)
   const API_URL = '/api/duos';
 
@@ -51,6 +51,9 @@ export function useDuo() {
   const updateDuo = async ({idDuo, updateData}: {idDuo: number, updateData: any}) => {
 
     const sessionId = window.localStorage.getItem("TF2024")
+    // separate the grouo info and set only the group id
+    const [groupId, groupName] = updateData['group_id'].split(',')
+    updateData['group_id'] = groupId;
     const fetchOpts =  {
       method: 'PATCH',
       body: JSON.stringify({id: idDuo, data: updateData}),
@@ -74,7 +77,8 @@ export function useDuo() {
         if(duo.id === idDuo) {
           const duoEdited = {
             ...duo,
-            ...updateData
+            ...updateData,
+            groupName
           }
           return duoEdited;
         }
@@ -93,8 +97,8 @@ export function useDuo() {
   useEffect(() => {
     setLoading(true)
     getDuos()
-      .then(data => {
-        const { duos: allDuos } = data
+      .then(dataDuos => {
+        const { duos: allDuos } = dataDuos
         setDuos(allDuos)
       })
       .catch(err => console.log(err))
