@@ -2,6 +2,7 @@
 import { PencilLine, Users, ArrowBigRightDash } from "lucide-react";
 import { Toaster } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 const session = Astro.locals.session;
 if (!session) {
@@ -41,9 +42,19 @@ const menuDashboard = [
 ---
 
 <>
-  <div class="relative min-h-screen grid xs:grid-cols-[_0.15fr_1fr]">
+  <div class="relative min-h-screen grid sm:grid-cols-[_0.15fr_1fr]">
+    <Button
+      className="relative z-20 my-5 mx-8 md:mx-12 lg:mx-20 sm:hidden"
+      variant={"secondary"}
+      size={"icon"}
+      id="btn-dashbord-menu"
+    >
+      <Menu />
+      <X className="hidden" />
+    </Button>
     <aside
-      class="relative xs:sticky top-0 py-4 px-10 flex items-center bg-card border-r border-stone-700 h-screen"
+      id="aside-nav"
+      class="fixed -translate-x-full sm:translate-x-0 transition-transform z-10 sm:sticky top-0 py-4 px-10 flex items-center bg-card border-r border-stone-700 h-screen backdrop-blur-md"
     >
       <nav>
         <ul class="grid gap-y-5">
@@ -87,6 +98,7 @@ const menuDashboard = [
 </script>
 
 <script>
+  // logout
   const logOutForm = document.getElementById("form-sign-out");
   logOutForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -95,5 +107,18 @@ const menuDashboard = [
     });
     window.localStorage.removeItem("TF2024");
     window.location.href = "/login";
+  });
+
+  // open/close menu
+  const btnDashboardMenu = document.getElementById(
+    "btn-dashbord-menu"
+  ) as HTMLButtonElement;
+  const asideNav = document.getElementById("aside-nav") as HTMLElement;
+
+  btnDashboardMenu.addEventListener("click", () => {
+    asideNav.classList.toggle("-translate-x-full");
+    [...btnDashboardMenu.children].forEach((el) => {
+      el.classList.toggle("hidden");
+    });
   });
 </script>
