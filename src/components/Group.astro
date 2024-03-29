@@ -1,8 +1,14 @@
 ---
-import type { Duo } from "@/lib/types";
+// import type { Duo } from "@/lib/types";
 interface Props {
   name: string;
-  listDuos: Duo[];
+  listDuos: {
+    id: number;
+    player1: string;
+    player2: string;
+    groupId: number;
+    groupName: string;
+  }[];
 }
 
 const { name, listDuos } = Astro.props;
@@ -49,8 +55,8 @@ const groupsColors: Record<string, string> = {
           return (
             <li class="border flex flex-col justify-center">
               <ul class="px-3 py-6 list-disc list-inside">
-                <li>{duo.player1.name}</li>
-                <li>{duo.player2.name}</li>
+                <li>{duo.player1}</li>
+                <li>{duo.player2}</li>
               </ul>
             </li>
           );

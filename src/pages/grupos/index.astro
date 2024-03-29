@@ -2,6 +2,39 @@
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/Container.astro";
 import Group from "@/components/Group.astro";
+import { db } from "@/lib/db";
+
+const duosWithGroup: any[] = db
+  .prepare(
+    `
+    SELECT
+      duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
+    FROM
+      duos
+    INNER JOIN groups ON groups.id = duos.group_id
+    ORDER BY groups.name ASC;
+`
+  )
+  .all();
+console.log(duosWithGroup);
+
+type RenderDuo = {
+  id: number;
+  player1: string;
+  player2: string;
+  groupId: number;
+  groupName: string;
+};
+const duosByGroup: Record<string, RenderDuo[]> = {};
+for (const item of duosWithGroup) {
+  const key = item["groupName"];
+  if (!duosByGroup[key]) {
+    duosByGroup[key] = [];
+  }
+  duosByGroup[key].push(item);
+}
+
+const entriesduosByGroup = Object.entries(duosByGroup);
 
 const groups = [
   {
@@ -203,8 +236,8 @@ const groups = [
           class="grid md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20 md:gap-y-16"
         >
           {
-            groups.map((group) => {
-              return <Group name={group.name} listDuos={group.duosList} />;
+            entriesduosByGroup.map(([groupName, groupDuos]) => {
+              return <Group name={groupName} listDuos={groupDuos} />;
             })
           }
         </section>
