@@ -1,4 +1,5 @@
 import { useDuo } from "@/hooks/useDuo"
+import { useGroup } from "@/hooks/useGroup"
 import {
   Table,
   TableBody,
@@ -28,6 +29,7 @@ import type React from "react"
 
 export default function DuosTable(props: any) {
   const {duos, loading, deleteDuo, updateDuo} = useDuo()
+  const { groups } = useGroup()
 
   const handlerDelete = ({idDuo}: {idDuo: number}) => {
     deleteDuo({idDuo})
@@ -57,6 +59,7 @@ export default function DuosTable(props: any) {
               <TableRow>
                 <TableHead className="text-center xs:text-left text-sm xs:text-base">Jugador 1</TableHead>
                 <TableHead className="text-center xs:text-left text-sm xs:text-base">Jugador 2</TableHead>
+                <TableHead className="text-center xs:text-left text-sm xs:text-base">Grupo</TableHead>
                 <TableHead className="text-center xs:text-left text-sm xs:text-base">Acciones</TableHead>
               </TableRow>
             </TableHeader>
@@ -67,6 +70,7 @@ export default function DuosTable(props: any) {
                   <TableRow key={duo.id}>
                     <TableCell>{duo.player1}</TableCell>
                     <TableCell>{duo.player2}</TableCell>
+                    <TableCell>{duo.groupName}</TableCell>
                     <TableCell>
                       <div className="flex gap-1">
                         {/* Update */}
@@ -112,6 +116,31 @@ export default function DuosTable(props: any) {
                                   defaultValue={duo.player2}
                                   maxLength={45}
                                   className="col-span-3" required />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <label htmlFor="group_id" className="text-right">
+                                  Grupo
+                                </label>
+                                <select className="col-span-3 bg-card border border-input px-3 py-1 text-sm shadow-sm transition-colors rounded-md file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" name="group_id" id="group_id" required>
+                                  <option
+                                    value={[duo.groupId?.toString(), duo.groupName]}
+                                  >
+                                    {duo.groupName ?? 'Selecciona grupo'}
+                                  </option>
+                                  {
+                                    groups.map(group => {
+                                      return (
+                                        <option
+                                          key={group.id}
+                                          value={[group.id.toString(), group.name]}
+                                          className={group.id === duo.groupId ? 'hidden' : ''}
+                                        >
+                                            {group.name}
+                                        </option>
+                                      )
+                                    })
+                                  }
+                                </select>
                               </div>
                             </form>
                             <DialogFooter>
