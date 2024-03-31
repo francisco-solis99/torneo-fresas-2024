@@ -14,6 +14,17 @@ export function getStaticPaths() {
   ];
 }
 
+const groupsColors: Record<string, string> = {
+  A: "bg-red-950/90",
+  B: "bg-yellow-950/90",
+  C: "bg-emerald-950/90",
+  D: "bg-cyan-950/90",
+  E: "bg-rose-950/90",
+  F: "bg-amber-950/90",
+  G: "bg-teal-950/90",
+  H: "bg-violet-950/90",
+};
+
 const { group } = Astro.params;
 ---
 
@@ -24,7 +35,7 @@ const { group } = Astro.params;
       style="--_num-lines: 5vmin; --_heigh-pattern: 40vh;"
     >
       <div
-        class="absolute left-1/2 top-1/2 h-80 w-full -translate-x-1/2 -translate-y-3/4 rounded-[100%] opacity-70 blur-[60px] bg-[#360b0b] -z-10"
+        class={`absolute left-1/2 top-1/2 h-80 w-full -translate-x-1/2 -translate-y-3/4 rounded-full opacity-70 blur-[60px] ${groupsColors[group]} -z-10`}
       >
       </div>
       <h1
