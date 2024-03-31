@@ -228,22 +228,32 @@ db.exec(`CREATE TABLE IF NOT EXISTS duos (
 */
 
 function fillDuosGroupRandomly() {
-  const randomDuos = db.prepare("SELECT * FROM duos ORDER BY random()").all();
-  const groupsId: any[] = db.prepare("SELECT id FROM groups").all();
-  const numDuosPerGroup = 3;
+  const randomDuos = db
+    .prepare(
+      `
+    SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
+    FROM duos
+    LEFT JOIN groups ON groups.id = duos.group_id
+    ORDER BY random()
+  `
+    )
+    .all();
+  console.log(randomDuos);
+  // const groupsId: any[] = db.prepare("SELECT id FROM groups").all();
+  // const numDuosPerGroup = 3;
 
-  const updateDuoGroupId = db.prepare(
-    "UPDATE duos SET group_id = ? WHERE id = ?"
-  );
-  let indexGroup = 0;
-  randomDuos.forEach((duo: any, index: number) => {
-    if (index % numDuosPerGroup === 0) indexGroup += 1;
-    const groupId = groupsId[indexGroup - 1];
-    updateDuoGroupId.run(groupId.id, duo.id);
-  });
+  // const updateDuoGroupId = db.prepare(
+  //   "UPDATE duos SET group_id = ? WHERE id = ?"
+  // );
+  // let indexGroup = 0;
+  // randomDuos.forEach((duo: any, index: number) => {
+  //   if (index % numDuosPerGroup === 0) indexGroup += 1;
+  //   const groupId = groupsId[indexGroup - 1];
+  //   updateDuoGroupId.run(groupId.id, duo.id);
+  // });
 }
 
-// fillDuosGroupRandomly();
+fillDuosGroupRandomly();
 
 // const duosByGroup = db
 //   .prepare(
