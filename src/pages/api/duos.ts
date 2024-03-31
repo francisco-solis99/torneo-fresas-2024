@@ -1,10 +1,37 @@
+export const prerender = false;
 import type { APIRoute } from "astro";
 import { db } from "@/lib/db";
 import { lucia } from "@/lib/auth";
 import type { DatabaseDuo } from "@/lib/db";
 
 export const GET: APIRoute = async ({ request }) => {
+  // check query params
+  const queryParams = new URL(request.url).searchParams;
+
   try {
+    // Evaluate if there is query param for random
+    if (queryParams.get("random") === "true") {
+      const randomDuos = db
+        .prepare(
+          `
+      SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
+      FROM duos
+      LEFT JOIN groups ON groups.id = duos.group_id
+      ORDER BY random()
+    `
+        )
+        .all();
+
+      return new Response(
+        JSON.stringify({
+          duos: randomDuos,
+        }),
+        {
+          status: 200,
+        }
+      );
+    }
+
     const allDuos = db
       .prepare(
         `
@@ -188,6 +215,7 @@ export const PATCH: APIRoute = async ({ request }) => {
   const { id: idDuoToUpdate, data: dataToUpdate } = await request.json();
 
   // Valid the dataDuo
+  // TODO: valid the groupid
   const { errorMessage, validated } = validateDuoData(dataToUpdate);
   if (!validated) {
     return new Response(
@@ -199,7 +227,6 @@ export const PATCH: APIRoute = async ({ request }) => {
       }
     );
   }
-
   // update the duo
   try {
     const query = db.prepare(

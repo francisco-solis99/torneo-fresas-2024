@@ -1,35 +1,16 @@
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
+import { getDuos, deleteDuoById, updateDuoById } from '@/services/duos'
 
 import type { DuoTable } from "@/lib/types";
 
 export function useDuo() {
   const [duos, setDuos] = useState<DuoTable[] | []>([])
   const [loading, setLoading] = useState<Boolean| null>(null)
-  const API_URL = '/api/duos';
-
-  const getDuos = () => {
-    return fetch(API_URL)
-      .then(response => response.json())
-      .then(data => data)
-      .catch(err => {
-        console.log(err)
-      })
-  }
 
   const deleteDuo = async ({idDuo}: {idDuo: number}) => {
-    const sessionId = window.localStorage.getItem("TF2024")
-    const fetchOpts =  {
-      method: 'DELETE',
-      body: JSON.stringify({id: idDuo}),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionId}`
-      }
-    }
-
     try {
-      const response = await fetch('/api/duos', fetchOpts)
+      const response = await deleteDuoById({idDuo})
       if(!response.ok) {
         const errorMessage = (await response.json()).error
         const errToThrow =  new Error(errorMessage)
@@ -49,22 +30,9 @@ export function useDuo() {
   }
 
   const updateDuo = async ({idDuo, updateData}: {idDuo: number, updateData: any}) => {
-
-    const sessionId = window.localStorage.getItem("TF2024")
-    // separate the grouo info and set only the group id
-    const [groupId, groupName] = updateData['group_id'].split(',')
-    updateData['group_id'] = groupId;
-    const fetchOpts =  {
-      method: 'PATCH',
-      body: JSON.stringify({id: idDuo, data: updateData}),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionId}`
-      }
-    }
-
     try {
-      const response = await fetch('/api/duos', fetchOpts)
+      const response = await updateDuoById({idDuo, updateData})
+
       if(!response.ok) {
         const errorMessage = (await response.json()).error
         const errToThrow =  new Error(errorMessage)
@@ -72,18 +40,9 @@ export function useDuo() {
         throw errToThrow;
       }
       toast.success("Pareja actualizada con exito");
+
       // Update the state
-      const duosUpdated = duos.map(duo => {
-        if(duo.id === idDuo) {
-          const duoEdited = {
-            ...duo,
-            ...updateData,
-            groupName
-          }
-          return duoEdited;
-        }
-        return duo
-      })
+      const  { duos: duosUpdated } = await getDuos()
       setDuos(duosUpdated)
     } catch (error: any) {
       if(error.name === 'NotFound') {
@@ -98,14 +57,15 @@ export function useDuo() {
     setLoading(true)
     getDuos()
       .then(dataDuos => {
+        if(!dataDuos) throw new Error('Error al cargar las parejas')
         const { duos: allDuos } = dataDuos
         setDuos(allDuos)
       })
-      .catch(err => console.log(err))
+      .catch(err => toast.error(err))
       .finally(() => {
         setTimeout(() => setLoading(false), 1000)
       })
   }, [])
 
-  return {duos, loading, getDuos, deleteDuo, updateDuo}
+  return {duos, loading, deleteDuo, updateDuo}
 }
