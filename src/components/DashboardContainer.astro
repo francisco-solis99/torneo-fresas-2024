@@ -6,7 +6,6 @@ import { Menu, X } from "lucide-react";
 
 const session = Astro.locals.session;
 if (!session) {
-  console.log("que pedo");
   return Astro.redirect("/login");
 }
 
