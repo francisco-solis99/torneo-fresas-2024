@@ -34,7 +34,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
   id TEXT NOT NULL PRIMARY KEY,
   user_id TEXT NOT NULL,
   expires_at INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES user(id)
+  FOREIGN KEY (user_id)
+    REFERENCES user(id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION
+
 )`);
 
 // Group
@@ -54,6 +58,12 @@ db.exec(`CREATE TABLE IF NOT EXISTS duos (
       ON DELETE CASCADE
       ON UPDATE NO ACTION
 )`);
+
+// Phases
+
+// Matches
+
+// Winners/Phase
 
 // Seeds users
 // const users = [{ username: "pat-mahomes", password: "KC03PLM15" }];
