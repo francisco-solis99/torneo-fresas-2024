@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input"
 import { UndoDot, Trash2 } from 'lucide-react';
 import type React from "react"
 import { getDuos } from "@/services/duos"
+import { createMatch } from "@/services/matches"
 
 
 
@@ -50,17 +51,46 @@ export default function DuosTable(props: any) {
     const {duos: randomDuos} = await getDuos({random: true});
     const NUM_DUOS_PER_GROUP = 3;
 
-    let indexGroup = 0;
-    randomDuos.forEach(async (duo: any, index: number) => {
-      if (index % NUM_DUOS_PER_GROUP === 0) indexGroup += 1;
-      const groupId = groups[indexGroup - 1].id;
+    // set groupIds in duos
+    // let indexGroup = 0;
+    // randomDuos.forEach(async (duo: any, index: number) => {
+    //   if (index % NUM_DUOS_PER_GROUP === 0) indexGroup += 1;
+    //   const groupId = groups[indexGroup - 1].id;
 
-      updateDuo({idDuo: duo.id, updateData: {
-        player1: duo.player1,
-        player2: duo.player2,
-        group_id: groupId,
-      }})
-    });
+    //   updateDuo({idDuo: duo.id, updateData: {
+    //     player1: duo.player1,
+    //     player2: duo.player2,
+    //     group_id: groupId,
+    //   }})
+    // });
+    // create the matches for each group
+    // groups.forEach(group => {
+    //   const duosByGroup = randomDuos.filter((duo: any) => duo.groupId === group.id)
+    //   if(duosByGroup.length === 3) {
+    //     const [duo1, duo2, duo3] = duosByGroup;
+    //     createMatch({
+    //       duo1_id: duo1.id,
+    //       duo2_id: duo2.id,
+    //       points_d1: 0,
+    //       points_d2: 0,
+    //       phase_id: 1
+    //     })
+    //     createMatch({
+    //       duo1_id: duo1.id,
+    //       duo2_id: duo3.id,
+    //       points_d1: 0,
+    //       points_d2: 0,
+    //       phase_id: 1
+    //     })
+    //     createMatch({
+    //       duo1_id: duo2.id,
+    //       duo2_id: duo3.id,
+    //       points_d1: 0,
+    //       points_d2: 0,
+    //       phase_id: 1
+    //     })
+    //   }
+    // })
   }
 
   return (
