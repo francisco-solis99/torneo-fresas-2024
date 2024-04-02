@@ -71,5 +71,5 @@ export async function POST(context: APIContext): Promise<Response> {
     sessionCookie.attributes
   );
 
-  return new Response();
+  return new Response(null, { status: 200 });
 }
