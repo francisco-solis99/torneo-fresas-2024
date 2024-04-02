@@ -20,3 +20,12 @@ export type GroupTable = {
   id: number;
   name: string;
 };
+
+export type MatchTable = {
+  id?: number;
+  duo1_id: number;
+  duo2_id: number;
+  points_d1: number;
+  points_d2: number;
+  phase_id: number;
+};
