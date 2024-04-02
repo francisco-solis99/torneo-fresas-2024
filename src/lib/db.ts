@@ -22,6 +22,7 @@ export interface DatabaseDuo {
 //create the sqlite DB
 export const db = new sqlite("app.sqlite");
 
+// ---------------------------------- Tables ----------------------------------------------
 // Create a table with users
 db.exec(`CREATE TABLE IF NOT EXISTS user (
   id TEXT NOT NULL PRIMARY KEY,
@@ -59,12 +60,53 @@ db.exec(`CREATE TABLE IF NOT EXISTS duos (
       ON UPDATE NO ACTION
 )`);
 
-// Phases
+// Phases Table
+db.exec(`CREATE TABLE IF NOT EXISTS phases (
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+)`);
 
-// Matches
+// Matches Table
+// db.exec("DELETE FROM matches");
+db.exec(`CREATE TABLE IF NOT EXISTS matches (
+  id INTEGER NOT NULL PRIMARY KEY,
+  duo1_id INTEGER NOT NULL,
+  duo2_id INTEGER NOT NULL,
+  points_d1 INTEGER NOT NULL DEFAULT 0,
+  points_d2 INTEGER NOT NULL DEFAULT 0,
+  phase_id INTEGER NOT NULL,
+  CHECK (points_d1 >= 0 AND points_d1 <= 10),
+  CHECK (points_d2 >= 0 AND points_d2 <= 10),
+  FOREIGN KEY (phase_id)
+    REFERENCES phases (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION,
+  FOREIGN KEY (duo1_id)
+    REFERENCES duos (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION,
+  FOREIGN KEY (duo2_id)
+    REFERENCES duos (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION
+)`);
 
-// Winners/Phase
+// // Winners/Phase Table
+db.exec(`CREATE TABLE IF NOT EXISTS winners (
+  id INTEGER NOT NULL PRIMARY KEY,
+  phase_id INTEGER NOT NULL,
+  duo_id INTEGER NOT NULL,
+  FOREIGN KEY (duo_id)
+    REFERENCES duos (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION,
+  FOREIGN KEY (phase_id)
+    REFERENCES phases (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION
+)`);
 
+// ----------------------------------------------- Seeds ---------------------------------------
 // Seeds users
 // const users = [{ username: "pat-mahomes", password: "KC03PLM15" }];
 
@@ -205,6 +247,25 @@ db.exec(`CREATE TABLE IF NOT EXISTS duos (
 //   queryInsertDuos.run(duo.player1, duo.player2);
 // });
 
+// Seed for phases
+// const phases = [
+//   {
+//     name: "Fase 1",
+//   },
+//   {
+//     name: "Fase 2",
+//   },
+//   {
+//     name: "Fase 3",
+//   },
+// ];
+
+// const queryInsertPhases = db.prepare("INSERT INTO phases (name) VALUES (?)");
+
+// phases.forEach(async (phase) => {
+//   queryInsertPhases.run(phase.name);
+// });
+
 // ------------------------------------ EXAMPLES WITH DOCS ------------------------------
 // INSERT DATA
 // const data = [
@@ -263,11 +324,24 @@ function fillDuosGroupRandomly() {
   // });
 }
 
-fillDuosGroupRandomly();
+// fillDuosGroupRandomly();
 
-// const duosByGroup = db
-//   .prepare(
-//     "SELECT duos.id, player1, player2, group_id As groupId, groups.name AS group_name FROM duos LEFT JOIN groups ON groups.id = duos.group_id"
-//   )
-//   .all();
-// console.log(duosByGroup);
+const duosByGroup = db
+  .prepare(
+    `SELECT m.id AS match_id, g.name AS group_name,
+  d1.player1 AS player1_duo1,
+  d1.player2 AS player2_duo1,
+  d2.player1 AS player1_duo2,
+  d2.player2 AS player2_duo2,
+  m.points_d1,
+  m.points_d2,
+  p.name AS phase_name
+  FROM matches m
+  INNER JOIN duos d1 ON m.duo1_id = d1.id
+  INNER JOIN duos d2 ON m.duo2_id = d2.id
+  INNER JOIN groups g ON d1.group_id = g.id
+  INNER JOIN phases p ON m.phase_id = p.id
+  WHERE g.name = 'A'`
+  )
+  .all();
+console.log(duosByGroup);
