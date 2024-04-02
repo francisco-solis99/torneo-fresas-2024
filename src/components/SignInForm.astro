@@ -46,7 +46,9 @@ import {
 </Card>
 
 <script>
-  const errorMessageElement = document.getElementById("form-error")!;
+  const errorMessageElement = document.getElementById(
+    "form-error"
+  ) as HTMLElement;
   const signInForm = document.getElementById("sign-in-form") as HTMLFormElement;
 
   signInForm.addEventListener("submit", async (e) => {
@@ -57,6 +59,7 @@ import {
       body: new FormData(signInForm),
     });
     if (response.ok) {
+      console.log("its ok");
       window.location.href = "/dashboard/registro";
     } else {
       errorMessageElement.innerText = (await response.json()).error;
