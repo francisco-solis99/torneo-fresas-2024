@@ -1,11 +1,31 @@
 ---
+interface Props {
+  player1Duo1: string;
+  player2Duo1: string;
+  player1Duo2: string;
+  player2Duo2: string;
+  pointsDuo1: number;
+  pointsDuo2: number;
+  isEditable?: boolean;
+}
+
 import MatchDialog from "@/components/MatchDialog";
+
+const {
+  player1Duo1,
+  player2Duo1,
+  player1Duo2,
+  player2Duo2,
+  pointsDuo1,
+  pointsDuo2,
+  isEditable = false,
+} = Astro.props;
 ---
 
 <article
   class="relative w-fit flex flex-col items-center bg-gradient-to-b from-black bg-stone-800 border rounded-sm"
 >
-  <MatchDialog client:idle />
+  {isEditable && <MatchDialog client:idle />}
   <div
     class="absolute inset-0 h-full w-full bg-[radial-gradient(#ffffff35_1px,transparent_1px)] [background-size:14px_14px]"
   >
@@ -15,11 +35,11 @@ import MatchDialog from "@/components/MatchDialog";
     class="h-full items-center p-3 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
   >
     <div class="flex">
-      <p>Dak Prescott</p>
+      <p>{player1Duo1}</p>
       <span class="mx-1">/</span>
-      <p>Ceedee Lamb</p>
+      <p>{player2Duo1}</p>
     </div>
-    <span class="inline-block text-lg ml-2 justify-self-end">0</span>
+    <span class="inline-block text-lg ml-2 justify-self-end">{pointsDuo1}</span>
   </div>
   <span
     class="absolute top-1/2 -translate-y-1/2 z-10 backdrop-blur-sm font-audioWide text-lg -skew-y-3 inline-block"
@@ -29,10 +49,10 @@ import MatchDialog from "@/components/MatchDialog";
     class="h-full items-center p-3 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
   >
     <div class="flex">
-      <p>Jalen Hurts</p>
+      <p>{player1Duo2}</p>
       <span class="mx-1">/</span>
-      <p>AJ Brown</p>
+      <p>{player2Duo2}</p>
     </div>
-    <span class="inline-block text-lg ml-2 justify-self-end">0</span>
+    <span class="inline-block text-lg ml-2 justify-self-end">{pointsDuo2}</span>
   </div>
 </article>
