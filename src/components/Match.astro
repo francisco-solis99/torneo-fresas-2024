@@ -9,8 +9,6 @@ interface Props {
   isEditable?: boolean;
 }
 
-import MatchDialog from "@/components/MatchDialog";
-
 const {
   player1Duo1,
   player2Duo1,
@@ -25,7 +23,6 @@ const {
 <article
   class="relative w-full flex flex-col items-center bg-gradient-to-b from-black bg-stone-800 border rounded-sm"
 >
-  {isEditable && <MatchDialog client:idle />}
   <div
     class="absolute inset-0 h-full w-full bg-[radial-gradient(#ffffff35_1px,transparent_1px)] [background-size:14px_14px]"
   >

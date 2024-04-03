@@ -8,19 +8,22 @@ if (!user) {
 import { db } from "@/lib/db";
 import DashboadLayout from "@/layouts/DashboardLayout.astro";
 import DashboardContainer from "@/components/DashboardContainer.astro";
-import Match from "@/components/Match.astro";
+import MatchesList from "@/components/MatchesList";
 
 const matchesByPhase = db
   .prepare(
     `
     SELECT m.id AS match_id, g.name AS group_name,
+    d1.id AS duo1_id,
     d1.player1 AS player1_duo1,
     d1.player2 AS player2_duo1,
+    d2.id AS duo2_id,
     d2.player1 AS player1_duo2,
     d2.player2 AS player2_duo2,
     m.points_d1,
     m.points_d2,
-    p.name AS phase_name
+    p.name AS phase_name,
+    p.id AS phase_id
     FROM matches m
     INNER JOIN duos d1 ON m.duo1_id = d1.id
     INNER JOIN duos d2 ON m.duo2_id = d2.id
@@ -30,17 +33,6 @@ const matchesByPhase = db
 `
   )
   .all("Fase 1");
-
-const groupsColors: Record<string, string> = {
-  A: "bg-red-950/90",
-  B: "bg-yellow-950/90",
-  C: "bg-emerald-950/90",
-  D: "bg-cyan-950/90",
-  E: "bg-rose-950/90",
-  F: "bg-amber-950/90",
-  G: "bg-teal-950/90",
-  H: "bg-violet-950/90",
-};
 ---
 
 <DashboadLayout
@@ -52,7 +44,7 @@ const groupsColors: Record<string, string> = {
       <h1 class="mb-4 text-xl sm:text-2xl md:text-4xl font-audioWide font-bold">
         Fase 1
       </h1>
-      <div
+      <!-- <div
         class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-12 gap-y-12"
       >
         {
@@ -60,6 +52,10 @@ const groupsColors: Record<string, string> = {
             return (
               <div>
                 <Match
+                  matchId={match.match_id}
+                  duo1Id={match.duo1_id}
+                  duo2Id={match.duo2_id}
+                  phaseId={match.phase_id}
                   player1Duo1={match.player1_duo1}
                   player2Duo1={match.player2_duo1}
                   player1Duo2={match.player1_duo2}
@@ -77,7 +73,12 @@ const groupsColors: Record<string, string> = {
             );
           })
         }
-      </div>
+      </div> -->
+      <MatchesList
+        client:load
+        matchesList={matchesByPhase}
+        isEditable={user ? true : false}
+      />
     </div>
   </DashboardContainer>
 </DashboadLayout>

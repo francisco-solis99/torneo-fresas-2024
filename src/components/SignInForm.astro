@@ -59,7 +59,6 @@ import {
       body: new FormData(signInForm),
     });
     if (response.ok) {
-      console.log("its ok");
       window.location.href = "/dashboard/registro";
     } else {
       errorMessageElement.innerText = (await response.json()).error;

@@ -43,6 +43,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
 )`);
 
 // Group
+// db.exec("DELETE FROM groups");
 db.exec(`CREATE TABLE IF NOT EXISTS groups (
   id INTEGER NOT NULL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
@@ -96,12 +97,17 @@ db.exec(`CREATE TABLE IF NOT EXISTS winners (
   id INTEGER NOT NULL PRIMARY KEY,
   phase_id INTEGER NOT NULL,
   duo_id INTEGER NOT NULL,
+  match_id INTEGER NOT NULL,
   FOREIGN KEY (duo_id)
     REFERENCES duos (id)
       ON DELETE CASCADE
       ON UPDATE NO ACTION,
   FOREIGN KEY (phase_id)
     REFERENCES phases (id)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION,
+  FOREIGN KEY (match_id)
+    REFERENCES matches (id)
       ON DELETE CASCADE
       ON UPDATE NO ACTION
 )`);
@@ -123,37 +129,19 @@ db.exec(`CREATE TABLE IF NOT EXISTS winners (
 // Seeds groups
 // const groups = [
 //   {
-//     id: 1,
 //     name: "A",
 //   },
 //   {
-//     id: 2,
 //     name: "B",
 //   },
 //   {
-//     id: 3,
 //     name: "C",
 //   },
 // ];
-// const queryInsertGroups = db.prepare(
-//   "INSERT INTO groups (id, name) VALUES (?, ?)"
-// );
+// const queryInsertGroups = db.prepare("INSERT INTO groups (name) VALUES (?)");
 
 // groups.forEach((group) => {
-//   queryInsertGroups.run(group.id, group.name);
-// });
-
-// Seeds users
-// const users = [{ username: "pat-mahomes", password: "KC03PLM15" }];
-
-// const queryInsert = db.prepare(
-//   "INSERT INTO user (id, username, hashedPassword) VALUES (?, ?, ?)"
-// );
-
-// users.forEach(async (user) => {
-//   const userId = generateId(15);
-//   const hashedPassword = await new Argon2id().hash(user.password);
-//   queryInsert.run(userId, user.username, hashedPassword);
+//   queryInsertGroups.run(group.name);
 // });
 
 // Seeds duos
@@ -340,8 +328,7 @@ const duosByGroup = db
   INNER JOIN duos d1 ON m.duo1_id = d1.id
   INNER JOIN duos d2 ON m.duo2_id = d2.id
   INNER JOIN groups g ON d1.group_id = g.id
-  INNER JOIN phases p ON m.phase_id = p.id
-  WHERE g.name = 'A'`
+  INNER JOIN phases p ON m.phase_id = p.id`
   )
   .all();
-console.log(duosByGroup);
+// console.log(duosByGroup);

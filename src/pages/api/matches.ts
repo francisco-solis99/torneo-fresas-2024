@@ -5,7 +5,7 @@ import type { MatchTable } from "@/lib/types";
 
 export const GET: APIRoute = async () => {
   try {
-    const AllMatches = db
+    const allMatches = db
       .prepare(
         `
         SELECT * FROM matches;
@@ -15,7 +15,7 @@ export const GET: APIRoute = async () => {
 
     return new Response(
       JSON.stringify({
-        duos: AllMatches,
+        matches: allMatches,
       }),
       {
         status: 200,
@@ -52,7 +52,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     // create the match
     const dataMatch = await request.json();
-    console.log(dataMatch);
     // Valid the dataDuo
     const { errorMessage, validated } = validateMatchData(dataMatch);
     if (!validated) {
@@ -96,11 +95,129 @@ export const POST: APIRoute = async ({ request }) => {
   return new Response(null, { status: 400 });
 };
 
+export const PATCH: APIRoute = async ({ request }) => {
+  // verify the session
+  const authorizationHeader = request.headers.get("Authorization");
+  const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+  if (!sessionId) {
+    return new Response(null, {
+      status: 401,
+    });
+  }
+  const { session, user } = await lucia.validateSession(sessionId);
+  if (!session || !user) {
+    return new Response(null, {
+      status: 403,
+    });
+  }
+  const { id: idMatchToUpdate, data: dataToUpdate } = await request.json();
+
+  // Valid the match
+  const { errorMessage, validated } = validateMatchData(dataToUpdate);
+  if (!validated) {
+    return new Response(
+      JSON.stringify({
+        error: errorMessage,
+      }),
+      {
+        status: 400,
+      }
+    );
+  }
+
+  // update the match
+  try {
+    const query = db.prepare(
+      `UPDATE matches SET points_d1 = ?, points_d2 = ? WHERE id = ?`
+    );
+    query.run(dataToUpdate.points_d1, dataToUpdate.points_d2, idMatchToUpdate);
+    return new Response(
+      JSON.stringify({
+        message: "Match actualizado exiosamente",
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (error: any) {
+    return new Response(
+      JSON.stringify({
+        error: `Error del servidor interno`,
+      }),
+      {
+        status: 500,
+      }
+    );
+  }
+};
+
+export const DELETE: APIRoute = async ({ request }) => {
+  // verify the session
+  const authorizationHeader = request.headers.get("Authorization");
+  const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+  if (!sessionId) {
+    return new Response(null, {
+      status: 401,
+    });
+  }
+  const { session, user } = await lucia.validateSession(sessionId);
+  if (!session || !user) {
+    return new Response(null, {
+      status: 403,
+    });
+  }
+
+  const { id: idMatchToDelete } = await request.json();
+  // verify the id
+  if (!idMatchToDelete) {
+    return new Response(
+      JSON.stringify({
+        error: `Match no encontrado`,
+      }),
+      {
+        status: 404,
+      }
+    );
+  }
+
+  try {
+    const queryDelete = db.prepare(`DELETE FROM matches WHERE id = ?`);
+    const response = queryDelete.run(idMatchToDelete);
+    // verify the delete action
+    if (response.changes === 0) {
+      return new Response(
+        JSON.stringify({
+          error: `Match no encontrado`,
+        }),
+        {
+          status: 404,
+        }
+      );
+    }
+    return new Response(
+      JSON.stringify({
+        message: "Match eliminada exitosamente",
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        error: `Error del servidor interno`,
+      }),
+      {
+        status: 500,
+      }
+    );
+  }
+};
+
 function validateMatchData(matchData: MatchTable) {
   const { duo1_id, duo2_id, points_d1, points_d2, phase_id } = matchData;
-
   // Validate duos id and points type
-  for (const duo of [duo1_id, duo2_id, points_d1, points_d2]) {
+  for (const duo of [duo1_id, duo2_id, Number(points_d1), Number(points_d2)]) {
     if (typeof duo !== "number") {
       return {
         errorMessage: `Error en los datos proporcionados, verificalos`,

@@ -42,7 +42,7 @@ export default function DuosTable(props: any) {
     const updateData = Object.fromEntries(
       new FormData(e.target as HTMLFormElement)
     );
-    // separate the grouo info and set the id and name separetely
+    // set null if there is not groupId
     if(updateData['group_id'] === 'Selecciona un grupo') updateData['group_id'] = null as any;
     updateDuo({idDuo, updateData})
   }
@@ -63,6 +63,7 @@ export default function DuosTable(props: any) {
     //     group_id: groupId,
     //   }})
     // });
+
     // create the matches for each group
     // groups.forEach(group => {
     //   const duosByGroup = randomDuos.filter((duo: any) => duo.groupId === group.id)
@@ -104,7 +105,7 @@ export default function DuosTable(props: any) {
         )
         : (
           <>
-            <Button size={"sm"} className="mt-8 mb-3" onClick={handlerGenerateGroupsMatches}>Generar grupos y matches</Button>
+            <Button size={"sm"} className={`mt-8 mb-3`} onClick={handlerGenerateGroupsMatches}>Generar grupos y matches</Button>
             <Table className="overflow-x-auto">
               <TableCaption>Lista de parejas para el torneo de las fresas</TableCaption>
               <TableHeader>

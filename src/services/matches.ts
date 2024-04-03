@@ -21,3 +21,37 @@ export const createMatch = async (matchData: MatchTable) => {
   });
   return response;
 };
+
+export const updateMatchById = async ({
+  idMatch,
+  updateData,
+}: {
+  idMatch: number;
+  updateData: any;
+}) => {
+  const sessionId = window.localStorage.getItem("TF2024");
+  const fetchOpts = {
+    method: "PATCH",
+    body: JSON.stringify({ id: idMatch, data: updateData }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionId}`,
+    },
+  };
+  const response = await fetch(API_URL, fetchOpts);
+  return response;
+};
+
+export const deleteMatchById = async ({ idMatch }: { idMatch: number }) => {
+  const sessionId = window.localStorage.getItem("TF2024");
+  const fetchOpts = {
+    method: "DELETE",
+    body: JSON.stringify({ id: idMatch }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionId}`,
+    },
+  };
+  const response = await fetch(API_URL, fetchOpts);
+  return response;
+};
