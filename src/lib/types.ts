@@ -29,3 +29,10 @@ export type MatchTable = {
   points_d2: number;
   phase_id: number;
 };
+
+export type WinnerTable = {
+  id?: number;
+  duo_id: number;
+  match_id: number;
+  phase_id: number;
+};
