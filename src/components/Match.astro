@@ -6,7 +6,6 @@ interface Props {
   player2Duo2: string;
   pointsDuo1: number;
   pointsDuo2: number;
-  isEditable?: boolean;
 }
 
 const {
@@ -16,7 +15,6 @@ const {
   player2Duo2,
   pointsDuo1,
   pointsDuo2,
-  isEditable = false,
 } = Astro.props;
 ---
 
@@ -29,7 +27,7 @@ const {
   </div>
   <!-- Duos -->
   <div
-    class="h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+    class={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo1 > pointsDuo2 ? "bg-green-500/10" : ""}`}
   >
     <div class="flex items-center">
       <p class="text-sm lg:text-base">{player1Duo1}</p>
@@ -43,7 +41,7 @@ const {
     >VS</span
   >
   <div
-    class="h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+    class={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo2 > pointsDuo1 ? "bg-green-500/10" : ""}`}
   >
     <div class="flex items-center">
       <p class="text-sm lg:text-base">{player1Duo2}</p>
