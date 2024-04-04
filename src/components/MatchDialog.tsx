@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { createWinner, updateWinnerByMatchId } from "@/services/winners";
 
 
 export default function MatchDialog(
@@ -41,6 +42,27 @@ export default function MatchDialog(
     updateData['duo2_id'] = duo2Id
     updateData['phase_id'] = phaseId
     await updateMatchFn({idMatch: matchId, updateData})
+
+    // get the duoId winner with the udpateData
+    let winnerDuoId = null;
+    if(Number(updateData['points_d1']) > Number(updateData['points_d2'])) {
+      winnerDuoId = updateData['duo1_id']
+    } else {
+      winnerDuoId = updateData['duo2_id']
+    }
+
+    const dataWinner = {
+      duo_id: winnerDuoId,
+      match_id: matchId,
+      phase_id: phaseId
+    }
+    if(Number(pointsDuo1) === 0 && Number(pointsDuo2) === 0) {
+      // create a match winner
+      await createWinner(dataWinner)
+      return;
+    }
+    // update the match winner
+    await updateWinnerByMatchId({idMatch: matchId, updateData: dataWinner})
   }
 
   const handleDeleteMatch = async () => {
