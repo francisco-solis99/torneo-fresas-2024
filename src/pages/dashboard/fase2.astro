@@ -1,0 +1,103 @@
+---
+// export const prerender = true;
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+import { db } from "@/lib/db";
+import DashboadLayout from "@/layouts/DashboardLayout.astro";
+import DashboardContainer from "@/components/DashboardContainer.astro";
+import MatchesList from "@/components/MatchesList";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const groups = db.prepare("SELECT * FROM groups").all();
+
+const duosByGroupToNextPhase = groups.map((group: any) => {
+  const duosToNextPhase = db
+    .prepare(
+      `
+    SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
+       SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END) AS wins,
+       SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
+            CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
+       END) AS total_points
+    FROM groups g
+    INNER JOIN duos d ON g.id = d.group_id
+    INNER JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)
+    LEFT JOIN winners w ON m.id = w.match_id
+    WHERE m.phase_id = 1 AND g.name = ?
+    GROUP BY g.name, d.id, d.player1, d.player2
+    ORDER BY g.name, wins DESC
+    LIMIT 2;
+`
+    )
+    .all(group.name);
+  return duosToNextPhase;
+});
+---
+
+<DashboadLayout
+  title="Dashboard - Parejas"
+  description="Parejas para el Torneo de las Fresas"
+>
+  <DashboardContainer>
+    <div class="h-full flex flex-col justify-center">
+      <h1 class="mb-4 text-xl sm:text-2xl md:text-4xl font-audioWide font-bold">
+        Fase 2
+      </h1>
+      <section class="mt-10">
+        <h2 class="font-bold text-2xl mb-4">
+          Parejas que avanzaron a está fase
+        </h2>
+        <Table className="overflow-x-auto">
+          <TableCaption>Parejas que avanzaron a está fase</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead
+                className="text-center xs:text-left text-sm xs:text-base"
+                >Pareja</TableHead
+              >
+              <TableHead
+                className="text-center xs:text-left text-sm xs:text-base"
+                >Grupo</TableHead
+              >
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {
+              duosByGroupToNextPhase.flat().map((duo: any) => (
+                <TableRow>
+                  <TableCell>
+                    {duo.player1} / {duo.player2}
+                  </TableCell>
+                  <TableCell>{duo.group_name}</TableCell>
+                </TableRow>
+              ))
+            }
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={1}>Total Parejas</TableCell>
+              <TableCell>{groups.length * 2}</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </section>
+      <section>
+        <h2>Matches</h2>
+      </section>
+    </div>
+  </DashboardContainer>
+</DashboadLayout>
