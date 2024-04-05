@@ -1,19 +1,4 @@
 import MatchDialog from "@/components/MatchDialog";
-
-// const {
-//   matchId,
-//   duo1Id,
-//   duo2Id,
-//   phaseId,
-//   player1Duo1,
-//   player2Duo1,
-//   player1Duo2,
-//   player2Duo2,
-//   pointsDuo1,
-//   pointsDuo2,
-//   isEditable = false,
-// } = Astro.props;
-
 export default function Match({matchData, isEditable, updateMatchFn, deleteMatchFn} : {matchData: any, isEditable: boolean, updateMatchFn: Function, deleteMatchFn: Function}) {
   const {
     match_id: matchId, duo1_id: duo1Id, duo2_id: duo2Id, phase_id: phaseId,
