@@ -19,7 +19,7 @@ export default function Match({matchData, isEditable, updateMatchFn, deleteMatch
     match_id: matchId, duo1_id: duo1Id, duo2_id: duo2Id, phase_id: phaseId,
     points_d1: pointsDuo1, points_d2: pointsDuo2,
     player1_duo1: player1Duo1, player2_duo1: player2Duo1,
-    player1_duo2: player1Duo2, player2_duo1: player2Duo2} = matchData;
+    player1_duo2: player1Duo2, player2_duo2: player2Duo2} = matchData;
 
   return (
     <article
