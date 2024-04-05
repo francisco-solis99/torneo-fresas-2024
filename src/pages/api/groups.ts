@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 export const GET: APIRoute = async ({ request }) => {
   try {
-    const allGroups = db.prepare("SELECT * FROM groups").all();
+    const { rows: allGroups } = await db.execute("SELECT * FROM groups");
 
     return new Response(
       JSON.stringify({

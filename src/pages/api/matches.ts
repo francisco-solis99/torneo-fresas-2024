@@ -5,13 +5,7 @@ import type { MatchTable } from "@/lib/types";
 
 export const GET: APIRoute = async () => {
   try {
-    const allMatches = db
-      .prepare(
-        `
-        SELECT * FROM matches;
-    `
-      )
-      .all();
+    const { rows: allMatches } = await db.execute(`SELECT * FROM matches;`);
 
     return new Response(
       JSON.stringify({
@@ -53,7 +47,7 @@ export const POST: APIRoute = async ({ request }) => {
     // create the match
     const dataMatch = await request.json();
     // Valid the dataDuo
-    const { errorMessage, validated } = validateMatchData(dataMatch);
+    const { errorMessage, validated } = await validateMatchData(dataMatch);
     if (!validated) {
       return new Response(
         JSON.stringify({
@@ -69,10 +63,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     // create the new duo
     try {
-      const query = db.prepare(
-        "INSERT INTO matches (duo1_id, duo2_id, points_d1, points_d2, phase_id) VALUES (?, ?, ?, ?, ?)"
-      );
-      query.run(duo1_id, duo2_id, points_d1 ?? 0, points_d2 ?? 0, phase_id);
+      await db.execute({
+        sql: "INSERT INTO matches (duo1_id, duo2_id, points_d1, points_d2, phase_id) VALUES (?, ?, ?, ?, ?)",
+        args: [duo1_id, duo2_id, points_d1 ?? 0, points_d2 ?? 0, phase_id],
+      });
       return new Response(
         JSON.stringify({
           message: "Match creado exiosamente",
@@ -113,7 +107,7 @@ export const PATCH: APIRoute = async ({ request }) => {
   const { id: idMatchToUpdate, data: dataToUpdate } = await request.json();
 
   // Valid the match
-  const { errorMessage, validated } = validateMatchData(dataToUpdate);
+  const { errorMessage, validated } = await validateMatchData(dataToUpdate);
   if (!validated) {
     return new Response(
       JSON.stringify({
@@ -127,10 +121,10 @@ export const PATCH: APIRoute = async ({ request }) => {
 
   // update the match
   try {
-    const query = db.prepare(
-      `UPDATE matches SET points_d1 = ?, points_d2 = ? WHERE id = ?`
-    );
-    query.run(dataToUpdate.points_d1, dataToUpdate.points_d2, idMatchToUpdate);
+    await db.execute({
+      sql: "UPDATE matches SET points_d1 = ?, points_d2 = ? WHERE id = ?",
+      args: [dataToUpdate.points_d1, dataToUpdate.points_d2, idMatchToUpdate],
+    });
     return new Response(
       JSON.stringify({
         message: "Match actualizado exiosamente",
@@ -181,10 +175,12 @@ export const DELETE: APIRoute = async ({ request }) => {
   }
 
   try {
-    const queryDelete = db.prepare(`DELETE FROM matches WHERE id = ?`);
-    const response = queryDelete.run(idMatchToDelete);
+    const response = await db.execute({
+      sql: "DELETE FROM matches WHERE id = ?",
+      args: [idMatchToDelete],
+    });
     // verify the delete action
-    if (response.changes === 0) {
+    if (response.rowsAffected === 0) {
       return new Response(
         JSON.stringify({
           error: `Match no encontrado`,
@@ -214,7 +210,7 @@ export const DELETE: APIRoute = async ({ request }) => {
   }
 };
 
-function validateMatchData(matchData: MatchTable) {
+async function validateMatchData(matchData: MatchTable) {
   const { duo1_id, duo2_id, points_d1, points_d2, phase_id } = matchData;
   // Validate duos id and points type
   for (const duo of [duo1_id, duo2_id, Number(points_d1), Number(points_d2)]) {
@@ -228,9 +224,11 @@ function validateMatchData(matchData: MatchTable) {
 
   // Validate if exists the duosIds
   for (const duoId of [duo1_id, duo2_id]) {
-    const duoSelected = db
-      .prepare("SELECT * FROM duos WHERE id = ?")
-      .get(duoId);
+    const { rows } = await db.execute({
+      sql: "SELECT * FROM duos WHERE id = ?",
+      args: [duoId],
+    });
+    const duoSelected = rows[0];
     if (!duoSelected) {
       return {
         errorMessage: `Error al verificar las parejas o duos, verifica que existan`,
@@ -240,9 +238,11 @@ function validateMatchData(matchData: MatchTable) {
   }
 
   // Validate if the phase id exist
-  const phaseSelected = db
-    .prepare("SELECT * FROM phases WHERE id = ?")
-    .get(phase_id);
+  const { rows } = await db.execute({
+    sql: "SELECT * FROM phases WHERE id = ?",
+    args: [phase_id],
+  });
+  const phaseSelected = rows[0];
   if (!phaseSelected) {
     return {
       errorMessage: `Error al verificar la fase, verifica que exista`,

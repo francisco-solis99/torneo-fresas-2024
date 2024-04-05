@@ -1,4 +1,4 @@
-import sqlite from "better-sqlite3";
+import { createClient } from "@libsql/client";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 
@@ -19,19 +19,25 @@ export interface DatabaseDuo {
   groupId?: number;
 }
 
-//create the sqlite DB
-export const db = new sqlite("app.sqlite");
+//create the sqlite DB for production
+// export const db = createClient({
+//   url: import.meta.env.DATABASE_URL ?? "",
+//   authToken: import.meta.env.DATABASE_AUTH_TOKEN ?? "",
+// });
+//create the sqlite DB for dev
+export const db = createClient({
+  url: "file:local.db.sqlite",
+});
 
-// ---------------------------------- Tables ----------------------------------------------
-// Create a table with users
-db.exec(`CREATE TABLE IF NOT EXISTS user (
+// // Create a table with users
+await db.execute(`CREATE TABLE IF NOT EXISTS user (
   id TEXT NOT NULL PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
   hashedPassword TEXT NOT NULL
 )`);
 
-// Create a table with sessions with a relation to users table
-db.exec(`CREATE TABLE IF NOT EXISTS session (
+// // Create a table with sessions with a relation to users table
+await db.execute(`CREATE TABLE IF NOT EXISTS session (
   id TEXT NOT NULL PRIMARY KEY,
   user_id TEXT NOT NULL,
   expires_at INTEGER NOT NULL,
@@ -39,18 +45,17 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
     REFERENCES user(id)
       ON DELETE CASCADE
       ON UPDATE NO ACTION
-
 )`);
 
 // Group
 // db.exec("DELETE FROM groups");
-db.exec(`CREATE TABLE IF NOT EXISTS groups (
+await db.execute(`CREATE TABLE IF NOT EXISTS groups (
   id INTEGER NOT NULL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
 )`);
 
 // Duo
-db.exec(`CREATE TABLE IF NOT EXISTS duos (
+db.execute(`CREATE TABLE IF NOT EXISTS duos (
   id INTEGER NOT NULL PRIMARY KEY,
   player1 TEXT NOT NULL UNIQUE,
   player2 TEXT NOT NULL UNIQUE,
@@ -62,14 +67,14 @@ db.exec(`CREATE TABLE IF NOT EXISTS duos (
 )`);
 
 // Phases Table
-db.exec(`CREATE TABLE IF NOT EXISTS phases (
+db.execute(`CREATE TABLE IF NOT EXISTS phases (
   id INTEGER NOT NULL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
 )`);
 
 // Matches Table
-// db.exec("DELETE FROM matches");
-db.exec(`CREATE TABLE IF NOT EXISTS matches (
+// db.execute("DELETE FROM matches");
+db.execute(`CREATE TABLE IF NOT EXISTS matches (
   id INTEGER NOT NULL PRIMARY KEY,
   duo1_id INTEGER NOT NULL,
   duo2_id INTEGER NOT NULL,
@@ -93,7 +98,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS matches (
 )`);
 
 // // Winners/Phase Table
-db.exec(`CREATE TABLE IF NOT EXISTS winners (
+db.execute(`CREATE TABLE IF NOT EXISTS winners (
   id INTEGER NOT NULL PRIMARY KEY,
   phase_id INTEGER NOT NULL,
   duo_id INTEGER NOT NULL,
@@ -112,19 +117,31 @@ db.exec(`CREATE TABLE IF NOT EXISTS winners (
       ON UPDATE NO ACTION
 )`);
 
-// ----------------------------------------------- Seeds ---------------------------------------
+// ---------------------------------------------- SEED --------------------------------
 // Seeds users
 // const users = [{ username: "pat-mahomes", password: "KC03PLM15" }];
-
-// const queryInsert = db.prepare(
-//   "INSERT INTO user (id, username, hashedPassword) VALUES (?, ?, ?)"
-// );
-
-// users.forEach(async (user) => {
+// const usersHashed = users.map(async (user) => {
 //   const userId = generateId(15);
 //   const hashedPassword = await new Argon2id().hash(user.password);
-//   queryInsert.run(userId, user.username, hashedPassword);
+//   return {
+//     userId,
+//     username: user.username,
+//     hashedPassword,
+//   };
 // });
+
+// const queryUserInsert =
+//   "INSERT INTO user (id, username, hashedPassword) VALUES (?, ?, ?)";
+
+// const usersHashedResolved = await Promise.all(usersHashed);
+// const usersInserts = usersHashedResolved.map((user: any) => {
+//   const { userId, username, hashedPassword } = user;
+//   return {
+//     sql: queryUserInsert,
+//     args: [userId, username, hashedPassword],
+//   };
+// });
+// await db.batch(usersInserts, "write");
 
 // Seeds groups
 // const groups = [
@@ -138,102 +155,13 @@ db.exec(`CREATE TABLE IF NOT EXISTS winners (
 //     name: "C",
 //   },
 // ];
-// const queryInsertGroups = db.prepare("INSERT INTO groups (name) VALUES (?)");
-
-// groups.forEach((group) => {
-//   queryInsertGroups.run(group.name);
+// const groupsInserts = groups.map((group) => {
+//   return {
+//     sql: "INSERT INTO groups (name) VALUES (?)",
+//     args: [group.name],
+//   };
 // });
-
-// Seeds duos
-// const duos = [
-//   {
-//     player1: "Dak Prescott",
-//     player2: "Ceede Lamb",
-//   },
-//   {
-//     player1: "Jalen Hurts",
-//     player2: "Aj Brown",
-//   },
-//   {
-//     player1: "Brock Purdy",
-//     player2: "Brando Ayuk",
-//   },
-//   {
-//     player1: "Tom Brady",
-//     player2: "Rob Gronkoski",
-//   },
-//   {
-//     player1: "Kirk Cousins",
-//     player2: "Justin Jefferson",
-//   },
-//   {
-//     player1: "Patrick Mahomes",
-//     player2: "Travis Kelce",
-//   },
-//   {
-//     player1: "Tua Tagovailoa",
-//     player2: "Tyreek Hill",
-//   },
-//   {
-//     player1: "Josh Allen",
-//     player2: "Stephon Diggs",
-//   },
-//   {
-//     player1: "Joe Burrow",
-//     player2: "Jamar Chase",
-//   },
-//   {
-//     player1: "Lamar Jackson",
-//     player2: "Zay Flowers",
-//   },
-//   {
-//     player1: "Matthew Stafford",
-//     player2: "Puca Nakua",
-//   },
-//   {
-//     player1: "CJ Stroud",
-//     player2: "Nico Collins",
-//   },
-//   {
-//     player1: "Jared Goff",
-//     player2: "Amon-Ra St Brown",
-//   },
-//   {
-//     player1: "Justin Herbert",
-//     player2: "Keenan Allen",
-//   },
-//   {
-//     player1: "Baker Mayyield",
-//     player2: "Mike Evans",
-//   },
-//   {
-//     player1: "Jordan Love",
-//     player2: "Romeo Doubs",
-//   },
-//   {
-//     player1: "Aaron Rodgers",
-//     player2: "Garret Wilson",
-//   },
-//   {
-//     player1: "Russel Wilson",
-//     player2: "Courtland Sutton",
-//   },
-//   {
-//     player1: "Jimmy Garapollo",
-//     player2: "Davante Adams",
-//   },
-//   {
-//     player1: "Derek Car",
-//     player2: "Chris Olave",
-//   },
-// ];
-// const queryInsertDuos = db.prepare(
-//   "INSERT INTO duos (player1, player2) VALUES (?, ?)"
-// );
-
-// duos.forEach((duo) => {
-//   queryInsertDuos.run(duo.player1, duo.player2);
-// });
+// await db.batch(groupsInserts, "write");
 
 // Seed for phases
 // const phases = [
@@ -247,134 +175,10 @@ db.exec(`CREATE TABLE IF NOT EXISTS winners (
 //     name: "Fase 3",
 //   },
 // ];
-
-// const queryInsertPhases = db.prepare("INSERT INTO phases (name) VALUES (?)");
-
-// phases.forEach(async (phase) => {
-//   queryInsertPhases.run(phase.name);
+// const phasesInserts = phases.map((phase) => {
+//   return {
+//     sql: "INSERT INTO phases (name) VALUES (?)",
+//     args: [phase.name],
+//   };
 // });
-
-// ------------------------------------ EXAMPLES WITH DOCS ------------------------------
-// INSERT DATA
-// const data = [
-//   { name: "Caleb Williams", username: "cal-williams" },
-//   { name: "Patrick Mahomes", username: "pat-mahomes" },
-//   { name: "Joe Burrow", username: "joe-burrow" },
-// ];
-
-// const insertData = db.prepare(
-//   "INSERT INTO users (name, username) VALUES (?, ?)"
-// );
-
-// data.forEach((item) => {
-//   insertData.run(item.name, item.username);
-// });
-
-// db.close();
-
-// Get all users
-// const query = 'SELECT * FROM users'
-// const users = db.prepare(query).all()
-// console.log('My users: ', users)
-
-// Get a sinlgle user
-// const user = db.prepare('SELECT * FROM users WHERE id = ?').get(1)
-// console.log(user)
-
-/*
- -> Run is when you dont expect a return value
- -> Use prepare when you expect some return value like when you use a SELECT
-*/
-
-function fillDuosGroupRandomly() {
-  const randomDuos = db
-    .prepare(
-      `
-    SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
-    FROM duos
-    LEFT JOIN groups ON groups.id = duos.group_id
-    ORDER BY random()
-  `
-    )
-    .all();
-  console.log(randomDuos);
-  // const groupsId: any[] = db.prepare("SELECT id FROM groups").all();
-  // const numDuosPerGroup = 3;
-
-  // const updateDuoGroupId = db.prepare(
-  //   "UPDATE duos SET group_id = ? WHERE id = ?"
-  // );
-  // let indexGroup = 0;
-  // randomDuos.forEach((duo: any, index: number) => {
-  //   if (index % numDuosPerGroup === 0) indexGroup += 1;
-  //   const groupId = groupsId[indexGroup - 1];
-  //   updateDuoGroupId.run(groupId.id, duo.id);
-  // });
-}
-
-// fillDuosGroupRandomly();
-
-const query = db
-  .prepare(
-    `SELECT m.id AS match_id, g.name AS group_name,
-  d1.player1 AS player1_duo1,
-  d1.player2 AS player2_duo1,
-  d2.player1 AS player1_duo2,
-  d2.player2 AS player2_duo2,
-  m.points_d1,
-  m.points_d2,
-  p.name AS phase_name,
-  w.duo_id AS winner_id
-  FROM matches m
-  INNER JOIN duos d1 ON m.duo1_id = d1.id
-  INNER JOIN duos d2 ON m.duo2_id = d2.id
-  INNER JOIN groups g ON d1.group_id = g.id
-  INNER JOIN phases p ON m.phase_id = p.id
-  INNER JOIN winners w ON w.match_id = m.id`
-  )
-  .all();
-// console.log(query);
-
-// get the win matches per duo by group in phase 1
-const query2 = db
-  .prepare(
-    `
-    SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
-       SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END) AS wins,
-       SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
-            CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
-       END) AS total_points
-    FROM groups g
-    INNER JOIN duos d ON g.id = d.group_id
-    INNER JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)
-    LEFT JOIN winners w ON m.id = w.match_id  -- Use LEFT JOIN for potential un-won matches
-    WHERE m.phase_id = 1 AND g.id = 1  -- Filter for phase_id and specific group
-    GROUP BY g.name, d.id, d.player1, d.player2
-    ORDER BY g.name, wins DESC;`
-  )
-  .all();
-// console.log(query2);
-
-// get the points by duo in the matches of phase 1
-const query3 = db
-  .prepare(
-    `
-    WITH RankedDuos AS (
-      SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
-             COALESCE(SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END), 0) AS wins,
-             SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
-                  CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
-             END) AS total_points
-      FROM groups g
-      INNER JOIN duos d ON g.id = d.group_id
-      LEFT JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)  -- Use LEFT JOIN for all duos
-      LEFT JOIN winners w ON m.id = w.match_id  -- Use LEFT JOIN for potential un-won matches
-      WHERE m.phase_id = 1  -- Filter for phase_id and specific group
-      GROUP BY g.name, d.id, d.player1, d.player2
-    )
-    SELECT *
-    FROM RankedDuos
-    ORDER BY wins DESC, total_points DESC`
-  )
-  .all();
-// console.log(query3);
+// await db.batch(phasesInserts, "write");

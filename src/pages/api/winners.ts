@@ -5,13 +5,11 @@ import type { WinnerTable } from "@/lib/types";
 
 export const GET: APIRoute = async () => {
   try {
-    const allWinners = db
-      .prepare(
-        `
+    const { rows: allWinners } = await db.execute(
+      `
         SELECT * FROM winners;
     `
-      )
-      .all();
+    );
 
     return new Response(
       JSON.stringify({
@@ -53,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
     // create the match
     const dataWinner = await request.json();
     // Valid the dataDuo
-    const { errorMessage, validated } = validateWinnerData(dataWinner);
+    const { errorMessage, validated } = await validateWinnerData(dataWinner);
     if (!validated) {
       return new Response(
         JSON.stringify({
@@ -69,10 +67,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     // create the new winner
     try {
-      const query = db.prepare(
-        "INSERT INTO winners (duo_id, match_id, phase_id) VALUES (?, ?, ?)"
-      );
-      query.run(duo_id, match_id, phase_id);
+      await db.execute({
+        sql: "INSERT INTO winners (duo_id, match_id, phase_id) VALUES (?, ?, ?)",
+        args: [duo_id, match_id, phase_id],
+      });
       return new Response(
         JSON.stringify({
           message: "Winner creado exiosamente",
@@ -114,7 +112,7 @@ export const PATCH: APIRoute = async ({ request }) => {
 
   console.log(idMatch, dataToUpdate);
   // Valid the match
-  const { errorMessage, validated } = validateWinnerData(dataToUpdate);
+  const { errorMessage, validated } = await validateWinnerData(dataToUpdate);
   if (!validated) {
     return new Response(
       JSON.stringify({
@@ -128,10 +126,10 @@ export const PATCH: APIRoute = async ({ request }) => {
 
   // update the winner
   try {
-    const query = db.prepare(
-      `UPDATE winners SET phase_id = ?, duo_id = ? WHERE match_id = ?`
-    );
-    query.run(dataToUpdate.phase_id, dataToUpdate.duo_id, idMatch);
+    await db.execute({
+      sql: "UPDATE winners SET phase_id = ?, duo_id = ? WHERE match_id = ?",
+      args: [dataToUpdate.phase_id, dataToUpdate.duo_id, idMatch],
+    });
     return new Response(
       JSON.stringify({
         message: "Winner actualizado exiosamente",
@@ -152,7 +150,7 @@ export const PATCH: APIRoute = async ({ request }) => {
   }
 };
 
-function validateWinnerData(winnerData: WinnerTable) {
+async function validateWinnerData(winnerData: WinnerTable) {
   const { duo_id, match_id, phase_id } = winnerData;
   // Validate types
   for (const item of [Number(duo_id), match_id, phase_id]) {
@@ -165,9 +163,11 @@ function validateWinnerData(winnerData: WinnerTable) {
   }
 
   // Validate if exists the matchId
-  const matchSelected = db
-    .prepare("SELECT * FROM matches WHERE id = ?")
-    .get(match_id);
+  const { rows: rowsMatches } = await db.execute({
+    sql: "SELECT * FROM matches WHERE id = ?",
+    args: [match_id],
+  });
+  const matchSelected = rowsMatches[0];
   if (!matchSelected) {
     return {
       errorMessage: `Error al verificar la fase, verifica que exista`,
@@ -176,9 +176,11 @@ function validateWinnerData(winnerData: WinnerTable) {
   }
 
   // Validate if the phase id exist
-  const phaseSelected = db
-    .prepare("SELECT * FROM phases WHERE id = ?")
-    .get(phase_id);
+  const { rows: rowsPhases } = await db.execute({
+    sql: "SELECT * FROM phases WHERE id = ?",
+    args: [phase_id],
+  });
+  const phaseSelected = rowsPhases[0];
   if (!phaseSelected) {
     return {
       errorMessage: `Error al verificar la fase, verifica que exista`,

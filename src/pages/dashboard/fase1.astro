@@ -10,29 +10,27 @@ import DashboadLayout from "@/layouts/DashboardLayout.astro";
 import DashboardContainer from "@/components/DashboardContainer.astro";
 import MatchesList from "@/components/MatchesList";
 
-const matchesByPhase = db
-  .prepare(
-    `
-    SELECT m.id AS match_id, g.name AS group_name,
-    d1.id AS duo1_id,
-    d1.player1 AS player1_duo1,
-    d1.player2 AS player2_duo1,
-    d2.id AS duo2_id,
-    d2.player1 AS player1_duo2,
-    d2.player2 AS player2_duo2,
-    m.points_d1,
-    m.points_d2,
-    p.name AS phase_name,
-    p.id AS phase_id
-    FROM matches m
-    INNER JOIN duos d1 ON m.duo1_id = d1.id
-    INNER JOIN duos d2 ON m.duo2_id = d2.id
-    INNER JOIN groups g ON d1.group_id = g.id
-    INNER JOIN phases p ON m.phase_id = p.id
-    WHERE p.name = ?;
-`
-  )
-  .all("Fase 1");
+const { rows: matchesByPhase } = await db.execute({
+  sql: `
+      SELECT m.id AS match_id, g.name AS group_name,
+      d1.id AS duo1_id,
+      d1.player1 AS player1_duo1,
+      d1.player2 AS player2_duo1,
+      d2.id AS duo2_id,
+      d2.player1 AS player1_duo2,
+      d2.player2 AS player2_duo2,
+      m.points_d1,
+      m.points_d2,
+      p.name AS phase_name,
+      p.id AS phase_id
+      FROM matches m
+      INNER JOIN duos d1 ON m.duo1_id = d1.id
+      INNER JOIN duos d2 ON m.duo2_id = d2.id
+      INNER JOIN groups g ON d1.group_id = g.id
+      INNER JOIN phases p ON m.phase_id = p.id
+      WHERE p.name = ?;`,
+  args: ["Fase 1"],
+});
 ---
 
 <DashboadLayout

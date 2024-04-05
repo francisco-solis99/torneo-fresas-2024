@@ -5,9 +5,8 @@ import Container from "@/components/Container.astro";
 import Group from "@/components/Group.astro";
 import { db } from "@/lib/db";
 
-const duosWithGroup: any[] = db
-  .prepare(
-    `
+const { rows: duosWithGroup } = await db.execute(
+  `
     SELECT
       duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
     FROM
@@ -15,8 +14,7 @@ const duosWithGroup: any[] = db
     INNER JOIN groups ON groups.id = duos.group_id
     ORDER BY groups.name ASC;
 `
-  )
-  .all();
+);
 
 type RenderDuo = {
   id: number;

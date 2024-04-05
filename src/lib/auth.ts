@@ -1,10 +1,10 @@
 import { Lucia } from "lucia";
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
+import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
 import { db } from "./db";
 import type { DatabaseUser } from "./db";
 
 // create the adapter, with lucia and the db(depends of the db)
-const adapter = new BetterSqlite3Adapter(db, {
+const adapter = new LibSQLAdapter(db, {
   user: "user",
   session: "session",
 });

@@ -11,16 +11,14 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     // Evaluate if there is query param for random
     if (queryParams.get("random") === "true") {
-      const randomDuos = db
-        .prepare(
-          `
+      const { rows: randomDuos } = await db.execute(
+        `
       SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
       FROM duos
       LEFT JOIN groups ON groups.id = duos.group_id
       ORDER BY random()
     `
-        )
-        .all();
+      );
 
       return new Response(
         JSON.stringify({
@@ -32,15 +30,13 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
-    const allDuos = db
-      .prepare(
-        `
+    const { rows: allDuos } = await db.execute(
+      `
     SELECT duos.id, player1, player2, group_id AS groupId, groups.name AS groupName
       FROM duos
       LEFT JOIN groups ON groups.id = duos.group_id
     `
-      )
-      .all();
+    );
 
     return new Response(
       JSON.stringify({
@@ -96,10 +92,10 @@ export const POST: APIRoute = async ({ request }) => {
     const { player1, player2 } = dataDuo;
     // create the new duo
     try {
-      const query = db.prepare(
-        "INSERT INTO duos (player1, player2) VALUES (?, ?)"
-      );
-      query.run(player1, player2);
+      await db.execute({
+        sql: "INSERT INTO duos (player1, player2) VALUES (?, ?)",
+        args: [player1, player2],
+      });
       return new Response(
         JSON.stringify({
           message: "Pareja creada exiosamente",
@@ -163,10 +159,12 @@ export const DELETE: APIRoute = async ({ request }) => {
   }
 
   try {
-    const queryDelete = db.prepare(`DELETE FROM duos WHERE id = ?`);
-    const response = queryDelete.run(idDuoToDelete);
+    const response = await db.execute({
+      sql: "DELETE FROM duos WHERE id = ?",
+      args: [idDuoToDelete],
+    });
     // verify the delete action
-    if (response.changes === 0) {
+    if (response.rowsAffected === 0) {
       return new Response(
         JSON.stringify({
           error: `Pareja no encontrada`,
@@ -229,15 +227,15 @@ export const PATCH: APIRoute = async ({ request }) => {
   }
   // update the duo
   try {
-    const query = db.prepare(
-      `UPDATE duos SET player1 = ?, player2 = ?, group_id = ? WHERE id = ?`
-    );
-    query.run(
-      dataToUpdate.player1,
-      dataToUpdate.player2,
-      dataToUpdate.group_id,
-      idDuoToUpdate
-    );
+    await db.execute({
+      sql: "UPDATE duos SET player1 = ?, player2 = ?, group_id = ? WHERE id = ?",
+      args: [
+        dataToUpdate.player1,
+        dataToUpdate.player2,
+        dataToUpdate.group_id,
+        idDuoToUpdate,
+      ],
+    });
     return new Response(
       JSON.stringify({
         message: "Pareja actualizada exiosamente",
@@ -281,7 +279,7 @@ function validateDuoData(duoData: DatabaseDuo) {
       !/^[a-zA-Z\s]+$/.test(player)
     ) {
       return {
-        errorMessage: `Nombre del juagador ${playerNum} invalido`,
+        errorMessage: `Nombre del jugador ${playerNum} invalido`,
         validated: false,
       };
     }
