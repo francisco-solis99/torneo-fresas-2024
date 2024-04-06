@@ -1,0 +1,98 @@
+---
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+  title="Login - Torneo de las Fresas 2024"
+  description="Login Torneo de las Freasas"
+>
+  <div class="layer__background relative">
+    <main class="grid items-center max-w-7xl mx-auto min-h-screen">
+      <div class="mx-auto min-w-80 sm:min-w-[600px]">
+        <Card className="drop-shadow-[0_2px_10px_rgba(255,255,255,0.25)]">
+          <CardHeader>
+            <h1
+              class="font-audioWide text-3xl font-semibold leading-none tracking-tight"
+            >
+              Sign Up
+            </h1>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <form
+              method="post"
+              action="/api/signup"
+              id="sign-in-form"
+              class="grid gap-y-2 max-w-xl mx-auto"
+            >
+              <label for="username">
+                <span>Username</span>
+                <Input type="text" id="username" name="username" required />
+              </label>
+              <label for="password">
+                <span>Password</span>
+                <Input type="password" id="password" name="password" required />
+              </label>
+            </form>
+          </CardContent>
+          <CardFooter className="flex flex-col justify-center">
+            <p id="form-error" class="mb-2.5 text-red-400"></p>
+            <Button
+              type="submit"
+              form="sign-in-form"
+              size="lg"
+              className="hover:drop-shadow-[0_10px_8px_rgba(255,69,69,0.25)] transition-[filter]"
+              >Sign Up</Button
+            >
+          </CardFooter>
+        </Card>
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .layer__background::before {
+    --line: hsl(0 0% 95% / 0.2);
+    content: "";
+    display: block;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px 10vmin) 50% -5vmin /
+        7vmin 7vmin,
+      linear-gradient(var(--line) 1px, transparent 1px 10vmin) 50% -5vmin / 7vmin
+        7vmin;
+    top: 0;
+    -webkit-mask: linear-gradient(0deg, transparent 15%, white);
+    mask: linear-gradient(0deg, transparent 15%, white);
+  }
+</style>
+
+<script>
+  const errorMessageElement = document.getElementById("form-error")!;
+
+  document.forms[0].addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMessageElement.innerText = "";
+    const formElement = e.target as HTMLFormElement;
+    const response = await fetch(formElement.action, {
+      method: formElement.method,
+      body: new FormData(formElement),
+    });
+    if (response.ok) {
+      window.location.href = "/login";
+    } else {
+      errorMessageElement.innerText = (await response.json()).error;
+    }
+  });
+</script>
