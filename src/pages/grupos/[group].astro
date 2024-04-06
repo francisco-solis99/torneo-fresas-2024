@@ -54,8 +54,8 @@ const { rows: matchesByGroup } = await db.execute({
       INNER JOIN duos d2 ON m.duo2_id = d2.id
       INNER JOIN groups g ON d1.group_id = g.id
       INNER JOIN phases p ON m.phase_id = p.id
-      WHERE g.name = ?;`,
-  args: [group],
+      WHERE g.name = ? AND p.name = ?;`,
+  args: [group, "Fase 1"],
 });
 
 const { rows: statsByDuo } = await db.execute({
