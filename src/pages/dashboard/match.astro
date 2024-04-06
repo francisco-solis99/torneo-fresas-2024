@@ -5,6 +5,7 @@ if (!user) {
 }
 
 import { db } from "@/lib/db";
+import { Button } from "@/components/ui/button";
 import DashboadLayout from "@/layouts/DashboardLayout.astro";
 import DashboardContainer from "@/components/DashboardContainer.astro";
 import RegisterMatchForm from "@/components/RegisterMatchForm.astro";
@@ -24,7 +25,97 @@ const { rows: phases } = await db.execute(`
       <h1 class="mb-4 text-4xl font-audioWide font-bold">
         Dashboard - Registro Matches
       </h1>
+      <div class="mt-2 mb-5">
+        <Button className="w-fit" id="btn-match-generate"
+          >Generar Matches</Button
+        >
+      </div>
       <RegisterMatchForm duosList={duos} phasesList={phases} />
     </div>
   </DashboardContainer>
 </DashboadLayout>
+
+<script>
+  import { getDuos } from "../../services/duos";
+  import { getGroups } from "../../services/groups";
+  import { createMatch } from "../../services/matches";
+  import { toast } from "sonner";
+  import confetti from "canvas-confetti";
+
+  const btnGenMatches = document.getElementById("btn-match-generate");
+  btnGenMatches?.addEventListener(
+    "click",
+    async () => {
+      try {
+        const { groups } = await getGroups();
+        const { duos } = await getDuos();
+
+        groups.forEach(
+          (group: any) => {
+            const duosByGroup = duos.filter(
+              (duo: any) => duo.groupId === group.id
+            );
+            if (duosByGroup.length === 4) {
+              const [duo1, duo2, duo3, duo4] = duosByGroup;
+              // 6 matches by group
+              // 1/2
+              createMatch({
+                duo1_id: duo1.id,
+                duo2_id: duo2.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+              // 1/3
+              createMatch({
+                duo1_id: duo1.id,
+                duo2_id: duo3.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+              // 1/4
+              createMatch({
+                duo1_id: duo1.id,
+                duo2_id: duo4.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+              // 2/3
+              createMatch({
+                duo1_id: duo2.id,
+                duo2_id: duo3.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+              //2/4
+              createMatch({
+                duo1_id: duo2.id,
+                duo2_id: duo4.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+              // 3/4
+              createMatch({
+                duo1_id: duo3.id,
+                duo2_id: duo4.id,
+                points_d1: 0,
+                points_d2: 0,
+                phase_id: 1,
+              });
+            }
+          },
+          { once: true }
+        );
+        toast.success("Matches creados con exito");
+        confetti();
+      } catch (error) {
+        toast.error("Ocurrio un error");
+      }
+    },
+    { once: true }
+  );
+</script>
