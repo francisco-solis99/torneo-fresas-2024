@@ -1,5 +1,5 @@
 ---
-import { PencilLine, Users, ArrowBigRightDash } from "lucide-react";
+import { PencilLine, Users, ArrowBigRightDash, Pencil } from "lucide-react";
 import { Toaster } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -18,6 +18,11 @@ const menuDashboard = [
     icon: PencilLine,
   },
   {
+    name: "Reg.Matches",
+    href: "/dashboard/match",
+    icon: Pencil,
+  },
+  {
     name: "Parejas",
     href: "/dashboard/parejas",
     icon: Users,
@@ -30,11 +35,6 @@ const menuDashboard = [
   {
     name: "Fase 2",
     href: "/dashboard/fase2",
-    icon: ArrowBigRightDash,
-  },
-  {
-    name: "Fase 3",
-    href: "#",
     icon: ArrowBigRightDash,
   },
 ];

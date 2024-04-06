@@ -1,0 +1,147 @@
+---
+import { Button } from "@/components/ui/button";
+import Select from "react-select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+
+const { duosList, phasesList } = Astro.props;
+const duosOptions = duosList.map((duo: any) => {
+  return {
+    value: duo.id,
+    label: `${duo.player1} / ${duo.player2}`,
+  };
+});
+const phasesOptions = phasesList.map((phase: any) => {
+  return {
+    value: phase.id,
+    label: `${phase.name}`,
+  };
+});
+---
+
+<Card className="bg-card max-w-4xl">
+  <CardHeader>
+    <h2 class="text-3xl font-semibold leading-none tracking-tight">
+      Registro de matches
+    </h2>
+    <CardDescription> Registra los matches del torneo </CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-2">
+    <form id="register-match-form" class="grid gap-y-2">
+      <label for="duo1_id">
+        <span class="mb-2 inline-block">Pareja 1</span>
+        <div class="text-black text-sm">
+          <Select
+            id="duo1_id"
+            inputId="duo1_id"
+            client:idle
+            options={duosOptions}
+            name="duo1_id"
+            placeholder="Selecciona una pareja"
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                background: state.isFocused ? "transparent" : "transparent",
+              }),
+            }}
+          />
+        </div>
+      </label>
+      <label for="duo2_id">
+        <span class="mb-2 inline-block">Pareja 2</span>
+        <div class="text-black text-sm">
+          <Select
+            inputId="duo2_id"
+            client:idle
+            options={duosOptions}
+            name="duo2_id"
+            placeholder="Selecciona una pareja"
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                background: state.isFocused ? "transparent" : "transparent",
+              }),
+            }}
+          />
+        </div>
+      </label>
+      <label for="phase_id">
+        <span class="mb-2 inline-block">Fase</span>
+        <div class="text-black text-sm">
+          <Select
+            inputId="phase_id"
+            client:idle
+            options={phasesOptions}
+            name="phase_id"
+            placeholder="Selecciona la fase"
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                background: state.isFocused ? "transparent" : "transparent",
+              }),
+            }}
+          />
+        </div>
+      </label>
+    </form>
+  </CardContent>
+  <CardFooter className="flex flex-col justify-center">
+    <p id="form-error" class="mb-2.5 text-red-400"></p>
+    <Button
+      type="submit"
+      form="register-match-form"
+      size="lg"
+      className="hover:drop-shadow-[0_10px_8px_rgba(255,69,69,0.25)] transition-[filter]"
+      >Registrar</Button
+    >
+  </CardFooter>
+</Card>
+
+<script>
+  import { toast } from "sonner";
+  import { createMatch } from "../services/matches";
+
+  const errorMessageElement = document.getElementById("form-error")!;
+  const registerForm = document.getElementById(
+    "register-match-form"
+  ) as HTMLFormElement;
+
+  const handlerRegisterSubmit = async () => {
+    const entriesRegisterFormData = Object.fromEntries(
+      new FormData(registerForm)
+    );
+    const { duo1_id, duo2_id, phase_id } = entriesRegisterFormData;
+    const matchData = {
+      duo1_id: Number(duo1_id),
+      duo2_id: Number(duo2_id),
+      phase_id: Number(phase_id),
+      points_d1: 0,
+      points_d2: 0,
+    };
+
+    try {
+      if (duo1_id === duo2_id) throw new Error();
+      const response = await createMatch(matchData);
+      if (response.ok) {
+        toast.success("Match registrado con exito");
+        registerForm.reset();
+      } else {
+        errorMessageElement.innerText = (await response.json()).error;
+      }
+    } catch (error) {
+      toast.error("Error al tratar de registrar el match");
+    }
+  };
+
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMessageElement.innerText = "";
+
+    await handlerRegisterSubmit();
+  });
+</script>
