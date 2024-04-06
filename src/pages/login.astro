@@ -1,6 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import SignInForm from "@/components/SignInForm.astro";
+import { db } from "@/lib/db";
+
+const { rows: users } = await db.execute(`
+      SELECT * FROM user`);
+console.log(users);
 const user = Astro.locals.user;
 if (user) {
   // if user exist redirect to dashboard
