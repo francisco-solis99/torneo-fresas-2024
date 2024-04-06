@@ -15,16 +15,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export function getStaticPaths() {
-  return [
-    { params: { group: "A" } },
-    { params: { group: "B" } },
-    { params: { group: "C" } },
-    { params: { group: "D" } },
-    { params: { group: "E" } },
-    { params: { group: "F" } },
-  ];
-}
+// export function getStaticPaths() {
+//   return [
+//     { params: { group: "A" } },
+//     { params: { group: "B" } },
+//     { params: { group: "C" } },
+//     { params: { group: "D" } },
+//     { params: { group: "E" } },
+//     { params: { group: "F" } },
+//   ];
+// }
 
 const groupsColors: Record<string, string> = {
   A: "bg-red-950/90",
@@ -35,10 +35,14 @@ const groupsColors: Record<string, string> = {
   F: "bg-amber-950/90",
   G: "bg-teal-950/90",
   H: "bg-violet-950/90",
+  I: "bg-teal-950/90",
+  J: "bg-fuchsia-950/90",
+  K: "bg-indigo-950/90",
+  L: "bg-orange-950/90",
 };
 
 const { group } = Astro.params;
-
+const groupName: any = group;
 const { rows: matchesByGroup } = await db.execute({
   sql: `
       SELECT m.id AS match_id, g.name AS group_name,
@@ -55,27 +59,32 @@ const { rows: matchesByGroup } = await db.execute({
       INNER JOIN groups g ON d1.group_id = g.id
       INNER JOIN phases p ON m.phase_id = p.id
       WHERE g.name = ? AND p.name = ?;`,
-  args: [group, "Fase 1"],
+  args: [groupName, "Fase 1"],
 });
+// console.log(matchesByGroup);
 
 const { rows: statsByDuo } = await db.execute({
   sql: `
-      SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
-        SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END) AS wins,
-        SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
-              CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
-        END) AS total_points
-      FROM groups g
-      INNER JOIN duos d ON g.id = d.group_id
-      INNER JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)
-      LEFT JOIN winners w ON m.id = w.match_id
-      WHERE m.phase_id = 1 AND g.name = ?
-      GROUP BY g.name, d.id, d.player1, d.player2
-      ORDER BY g.name, wins DESC;
+  WITH RankedDuos AS (
+    SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
+          COALESCE(SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END), 0) AS wins,
+          SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
+                CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
+          END) AS total_points
+    FROM groups g
+    INNER JOIN duos d ON g.id = d.group_id
+    LEFT JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)  -- Use LEFT JOIN for all duos
+    LEFT JOIN winners w ON m.id = w.match_id  -- Use LEFT JOIN for potential un-won matches
+    WHERE m.phase_id = 1 AND g.name = ?  -- Filter for phase_id and specific group
+    GROUP BY g.name, d.id, d.player1, d.player2
+  )
+  SELECT *
+  FROM RankedDuos
+  ORDER BY wins DESC, total_points DESC
     `,
-  args: [group],
+  args: [groupName],
 });
-// console.log(statsByDuo);
+console.log(statsByDuo);
 ---
 
 <Layout title="Torneo de las Fresas 2024" description="Torneo de las Fresas">
@@ -85,7 +94,7 @@ const { rows: statsByDuo } = await db.execute({
       style="--_num-lines: 5vmin; --_heigh-pattern: 40vh;"
     >
       <div
-        class={`absolute left-1/2 top-1/2 h-80 w-full -translate-x-1/2 -translate-y-3/4 rounded-full opacity-70 blur-[60px] ${groupsColors[group]} -z-10`}
+        class={`absolute left-1/2 top-1/2 h-80 w-full -translate-x-1/2 -translate-y-3/4 rounded-full opacity-70 blur-[60px] ${groupsColors[groupName]} -z-10`}
       >
       </div>
       <h1
