@@ -45,6 +45,65 @@ const duosByGroupToNextPhasePromises = groups.map(async (group: any) => {
 const duosByGroupToNextPhase = await Promise.all(
   duosByGroupToNextPhasePromises
 );
+
+const { rows: matchesByPhase } = await db.execute({
+  sql: `
+      SELECT m.id AS match_id, g.name AS group_name,
+      d1.id AS duo1_id,
+      d1.player1 AS player1_duo1,
+      d1.player2 AS player2_duo1,
+      d2.id AS duo2_id,
+      d2.player1 AS player1_duo2,
+      d2.player2 AS player2_duo2,
+      m.points_d1,
+      m.points_d2,
+      p.name AS phase_name,
+      p.id AS phase_id
+      FROM matches m
+      INNER JOIN duos d1 ON m.duo1_id = d1.id
+      INNER JOIN duos d2 ON m.duo2_id = d2.id
+      INNER JOIN groups g ON d1.group_id = g.id
+      INNER JOIN phases p ON m.phase_id = p.id
+      WHERE p.name = ?;`,
+  args: ["Fase 2"],
+});
+
+// function generateMatches(data: any) {
+//   // Combine all duos into a single array
+//   const allDuos: any = [].concat(...data);
+
+//   // Shuffle duos for random matchups within groups
+//   allDuos.sort(() => Math.random() - 0.5);
+
+//   const matches = [];
+//   const seenGroups = {}; // Use an object to track seen groups for faster lookup
+
+//   for (let i = 0; i < allDuos.length; i++) {
+//     const duo1 = allDuos[i];
+//     const group2 = duo1.group_name;
+
+//     // Find a duo from a different group that hasn't played yet
+//     for (let j = i + 1; j < allDuos.length; j++) {
+//       const duo2 = allDuos[j];
+//       if (duo2.group_name !== group2 && !seenGroups[duo2.group_name]) {
+//         seenGroups[duo2.group_name] = true; // Mark the group as seen
+//         matches.push({
+//           group_name_1: duo1.group_name,
+//           duo_id_1: duo1.duo_id,
+//           player1_1: duo1.player1,
+//           player2_1: duo1.player2,
+//           group_name_2: duo2.group_name,
+//           duo_id_2: duo2.duo_id,
+//           player1_2: duo2.player1,
+//           player2_2: duo2.player2,
+//         });
+//         break;
+//       }
+//     }
+//   }
+
+//   return matches;
+// }
 ---
 
 <DashboadLayout
@@ -96,8 +155,20 @@ const duosByGroupToNextPhase = await Promise.all(
           </TableFooter>
         </Table>
       </section>
-      <section>
-        <h2>Matches</h2>
+
+      <section class="mt-10">
+        {
+          matchesByPhase.length > 0 && (
+            <>
+              <h2 class="text-2xl font-bold">Matches</h2>
+              <MatchesList
+                client:load
+                matchesList={matchesByPhase}
+                isEditable={user ? true : false}
+              />
+            </>
+          )
+        }
       </section>
     </div>
   </DashboardContainer>
