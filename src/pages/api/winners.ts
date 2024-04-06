@@ -110,7 +110,6 @@ export const PATCH: APIRoute = async ({ request }) => {
   }
   const { id: idMatch, data: dataToUpdate } = await request.json();
 
-  console.log(idMatch, dataToUpdate);
   // Valid the match
   const { errorMessage, validated } = await validateWinnerData(dataToUpdate);
   if (!validated) {
@@ -187,7 +186,6 @@ async function validateWinnerData(winnerData: WinnerTable) {
       validated: false,
     };
   }
-  console.log("validated winner");
 
   // Pass validation
   return {

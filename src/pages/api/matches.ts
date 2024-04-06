@@ -249,7 +249,6 @@ async function validateMatchData(matchData: MatchTable) {
       validated: false,
     };
   }
-  console.log("validated");
 
   // Pass validation
   return {

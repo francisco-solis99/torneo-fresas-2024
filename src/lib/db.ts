@@ -182,3 +182,32 @@ db.execute(`CREATE TABLE IF NOT EXISTS winners (
 //   };
 // });
 // await db.batch(phasesInserts, "write");
+
+// Test queries
+// const { rows } = await db.execute(`
+// WITH RankedDuos AS (
+//   SELECT g.name AS group_name, d.id AS duo_id, d.player1, d.player2,
+//          COALESCE(SUM(CASE WHEN w.duo_id = d.id THEN 1 ELSE 0 END), 0) AS wins,
+//          SUM(CASE WHEN m.duo1_id = d.id THEN m.points_d1 ELSE
+//               CASE WHEN m.duo2_id = d.id THEN m.points_d2 ELSE 0 END
+//          END) AS total_points
+//   FROM groups g
+//   INNER JOIN duos d ON g.id = d.group_id
+//   LEFT JOIN matches m ON d.id IN (m.duo1_id, m.duo2_id)  -- Use LEFT JOIN for all duos
+//   LEFT JOIN winners w ON m.id = w.match_id  -- Use LEFT JOIN for potential un-won matches
+//   GROUP BY g.name, d.id, d.player1, d.player2
+// )
+// , RankedDuosByGroup AS (
+//   SELECT *,
+//          DENSE_RANK() OVER (PARTITION BY group_name ORDER BY wins DESC, total_points DESC) AS rank_within_group
+//   FROM RankedDuos
+// )
+// SELECT g1.group_name AS group1_name, rd1.duo_id AS duo1_id, rd1.player1 AS player1_1, rd1.player2 AS player2_1,
+//        g2.group_name AS group2_name, rd2.duo_id AS duo2_id, rd2.player1 AS player2_1, rd2.player2 AS player2_2
+// FROM RankedDuosByGroup rd1
+// INNER JOIN RankedDuosByGroup rd2 ON rd1.rank_within_group = 1 AND rd2.rank_within_group = 2 AND rd1.group_name <> rd2.group_name  -- Top duos from different groups
+// INNER JOIN groups g1 ON rd1.group_name = g1.name
+// INNER JOIN groups g2 ON rd2.group_name = g2.name
+// ORDER BY g1.group_name, rd1.rank_within_group;`);
+
+// console.log(rows);
