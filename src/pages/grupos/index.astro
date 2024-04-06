@@ -23,193 +23,196 @@ type RenderDuo = {
   groupId: number;
   groupName: string;
 };
-const duosByGroup: Record<string, RenderDuo[]> = {};
-for (const item of duosWithGroup) {
-  const key = item["groupName"];
-  if (!duosByGroup[key]) {
-    duosByGroup[key] = [];
+const duosByGroup: any = {};
+if (duosWithGroup.length > 0) {
+  for (const item of duosWithGroup) {
+    const key: any = item["groupName"];
+    if (!key) continue;
+    if (!duosByGroup[key]) {
+      duosByGroup[key] = [];
+    }
+    duosByGroup[key].push(item);
   }
-  duosByGroup[key].push(item);
 }
 
 const entriesduosByGroup = Object.entries(duosByGroup);
 
-const groups = [
-  {
-    name: "A",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-  {
-    name: "B",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-  {
-    name: "C",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-  {
-    name: "D",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-  {
-    name: "E",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-  {
-    name: "F",
-    duosList: [
-      {
-        player1: {
-          name: "Dak Prescott",
-        },
-        player2: {
-          name: "Ceedee Lamb",
-        },
-      },
-      {
-        player1: {
-          name: "Lamar Jackson",
-        },
-        player2: {
-          name: "Mark Andrews",
-        },
-      },
-      {
-        player1: {
-          name: "Patrick Mahomes",
-        },
-        player2: {
-          name: "Travis Kelce",
-        },
-      },
-    ],
-  },
-];
+// const groups = [
+//   {
+//     name: "A",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+//   {
+//     name: "B",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+//   {
+//     name: "C",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+//   {
+//     name: "D",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+//   {
+//     name: "E",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+//   {
+//     name: "F",
+//     duosList: [
+//       {
+//         player1: {
+//           name: "Dak Prescott",
+//         },
+//         player2: {
+//           name: "Ceedee Lamb",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Lamar Jackson",
+//         },
+//         player2: {
+//           name: "Mark Andrews",
+//         },
+//       },
+//       {
+//         player1: {
+//           name: "Patrick Mahomes",
+//         },
+//         player2: {
+//           name: "Travis Kelce",
+//         },
+//       },
+//     ],
+//   },
+// ];
 ---
 
 <Layout title="Torneo de las Fresas 2024" description="Torneo de las Fresas">
@@ -234,7 +237,11 @@ const groups = [
           class="grid md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20 md:gap-y-16"
         >
           {
-            entriesduosByGroup.map(([groupName, groupDuos]) => {
+            entriesduosByGroup.map((entryGroup: any) => {
+              const [groupName, groupDuos]: [
+                groupName: string,
+                groupDuos: RenderDuo[],
+              ] = entryGroup;
               return <Group name={groupName} listDuos={groupDuos} />;
             })
           }
