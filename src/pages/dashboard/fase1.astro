@@ -74,11 +74,16 @@ const { rows: matchesByPhase } = await db.execute({
           })
         }
       </div> -->
-      <MatchesList
-        client:load
-        matchesList={matchesByPhase}
-        isEditable={user ? true : false}
-      />
+
+      {
+        matchesByPhase.length > 0 && (
+          <MatchesList
+            client:load
+            matchesList={matchesByPhase}
+            isEditable={user ? true : false}
+          />
+        )
+      }
     </div>
   </DashboardContainer>
 </DashboadLayout>
