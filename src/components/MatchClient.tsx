@@ -30,12 +30,12 @@ export default function Match({matchData, isEditable, updateMatchFn, deleteMatch
       </div>
       {/* <!-- Duos --> */}
       <div
-        className="h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo1 > pointsDuo2 ? "bg-green-500/10" : ""}`}
       >
         <div className="flex items-center">
-          <p className="text-sm lg:text-base">{player1Duo1}</p>
+          <p className="text-sm">{player1Duo1}</p>
           <span className="mx-1">/</span>
-          <p className="text-sm lg:text-base">{player2Duo1}</p>
+          <p className="text-sm">{player2Duo1}</p>
         </div>
         <span className="inline-block text-lg ml-2 justify-self-end">{pointsDuo1}</span>
       </div>
@@ -45,12 +45,12 @@ export default function Match({matchData, isEditable, updateMatchFn, deleteMatch
         VS
       </span>
       <div
-        className="h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full"
+        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo2 > pointsDuo1 ? "bg-green-500/10" : ""}`}
       >
         <div className="flex items-center">
-          <p className="text-sm lg:text-base">{player1Duo2}</p>
+          <p className="text-sm">{player1Duo2}</p>
           <span className="mx-1">/</span>
-          <p className="text-sm lg:text-base">{player2Duo2}</p>
+          <p className="text-sm">{player2Duo2}</p>
         </div>
         <span className="inline-block text-lg ml-2 justify-self-end">{pointsDuo2}</span>
       </div>
