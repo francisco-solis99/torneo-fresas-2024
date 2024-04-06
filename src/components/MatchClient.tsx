@@ -30,7 +30,7 @@ export default function Match({matchData, isEditable, updateMatchFn, deleteMatch
       </div>
       {/* <!-- Duos --> */}
       <div
-        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo1 > pointsDuo2 ? "bg-green-500/10" : ""}`}
+        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full`}
       >
         <div className="flex items-center">
           <p className="text-sm">{player1Duo1}</p>
@@ -45,7 +45,7 @@ export default function Match({matchData, isEditable, updateMatchFn, deleteMatch
         VS
       </span>
       <div
-        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full ${pointsDuo2 > pointsDuo1 ? "bg-green-500/10" : ""}`}
+        className={`h-full items-center py-3 px-4 grid grid-cols-[1fr_auto] gap-x-5 border w-full`}
       >
         <div className="flex items-center">
           <p className="text-sm">{player1Duo2}</p>
