@@ -31,6 +31,8 @@ const { rows: matchesByPhase } = await db.execute({
       WHERE p.name = ?;`,
   args: ["Fase 1"],
 });
+
+// console.log(matchesByPhase);
 ---
 
 <DashboadLayout
