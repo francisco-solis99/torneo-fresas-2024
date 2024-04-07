@@ -77,7 +77,7 @@ export default function DuosTable(props: any) {
         )
         : (
           <>
-            <Button size={"sm"} className={`mt-8 mb-3`} onClick={handlerGenerateGroupsMatches}>Generar grupos</Button>
+            {/* <Button size={"sm"} className={`mt-8 mb-3`} onClick={handlerGenerateGroupsMatches}>Generar grupos</Button> */}
             <Table className="overflow-x-auto">
               <TableCaption>Lista de parejas para el torneo de las fresas</TableCaption>
               <TableHeader>
