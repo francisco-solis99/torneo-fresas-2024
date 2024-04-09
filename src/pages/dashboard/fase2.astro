@@ -71,43 +71,6 @@ const { rows: matchesByPhase } = await db.execute({
       WHERE p.name = ?;`,
   args: ["Fase 2"],
 });
-
-// function generateMatches(data: any) {
-//   // Combine all duos into a single array
-//   const allDuos: any = [].concat(...data);
-
-//   // Shuffle duos for random matchups within groups
-//   allDuos.sort(() => Math.random() - 0.5);
-
-//   const matches = [];
-//   const seenGroups = {}; // Use an object to track seen groups for faster lookup
-
-//   for (let i = 0; i < allDuos.length; i++) {
-//     const duo1 = allDuos[i];
-//     const group2 = duo1.group_name;
-
-//     // Find a duo from a different group that hasn't played yet
-//     for (let j = i + 1; j < allDuos.length; j++) {
-//       const duo2 = allDuos[j];
-//       if (duo2.group_name !== group2 && !seenGroups[duo2.group_name]) {
-//         seenGroups[duo2.group_name] = true; // Mark the group as seen
-//         matches.push({
-//           group_name_1: duo1.group_name,
-//           duo_id_1: duo1.duo_id,
-//           player1_1: duo1.player1,
-//           player2_1: duo1.player2,
-//           group_name_2: duo2.group_name,
-//           duo_id_2: duo2.duo_id,
-//           player1_2: duo2.player1,
-//           player2_2: duo2.player2,
-//         });
-//         break;
-//       }
-//     }
-//   }
-
-//   return matches;
-// }
 ---
 
 <DashboadLayout
@@ -117,14 +80,14 @@ const { rows: matchesByPhase } = await db.execute({
   <DashboardContainer>
     <div class="h-full flex flex-col justify-center">
       <h1 class="mb-4 text-xl sm:text-2xl md:text-4xl font-audioWide font-bold">
-        Fase 2
+        Octavos de Final
       </h1>
       <section class="mt-10">
         <h2 class="font-bold text-2xl mb-4">
           Parejas que avanzaron a está fase
         </h2>
         <Table className="overflow-x-auto">
-          <TableCaption>Parejas que avanzaron a está fase</TableCaption>
+          <TableCaption>Parejas que avanzaron a octavos de final</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead
@@ -164,7 +127,7 @@ const { rows: matchesByPhase } = await db.execute({
         {
           matchesByPhase.length > 0 && (
             <>
-              <h2 class="text-2xl font-bold">Matches</h2>
+              <h2 class="text-2xl font-bold">Siguientes Matches</h2>
               <MatchesList
                 client:load
                 matchesList={matchesByPhase}
