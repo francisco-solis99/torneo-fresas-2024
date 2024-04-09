@@ -1,0 +1,117 @@
+---
+// export const prerender = true;
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+import { db } from "@/lib/db";
+import DashboadLayout from "@/layouts/DashboardLayout.astro";
+import DashboardContainer from "@/components/DashboardContainer.astro";
+import MatchesList from "@/components/MatchesList";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const { rows: duosInThisPhase } = await db.execute({
+  sql: `SELECT d.player1 AS player1,
+        d.player2 AS player2
+        FROM duos d
+        INNER JOIN winners w ON w.duo_id = d.id
+        INNER JOIN phases p ON w.phase_id = p.id
+        WHERE p.name = ?`,
+  args: ["Fase 2"],
+});
+
+const { rows: matchesByPhase } = await db.execute({
+  sql: `
+      SELECT m.id AS match_id, g.name AS group_name,
+      d1.id AS duo1_id,
+      d1.player1 AS player1_duo1,
+      d1.player2 AS player2_duo1,
+      d2.id AS duo2_id,
+      d2.player1 AS player1_duo2,
+      d2.player2 AS player2_duo2,
+      m.points_d1,
+      m.points_d2,
+      p.name AS phase_name,
+      p.id AS phase_id
+      FROM matches m
+      INNER JOIN duos d1 ON m.duo1_id = d1.id
+      INNER JOIN duos d2 ON m.duo2_id = d2.id
+      INNER JOIN groups g ON d1.group_id = g.id
+      INNER JOIN phases p ON m.phase_id = p.id
+      WHERE p.name = ?;`,
+  args: ["Fase 3"],
+});
+---
+
+<DashboadLayout
+  title="Dashboard - Parejas"
+  description="Parejas para el Torneo de las Fresas"
+>
+  <DashboardContainer>
+    <div class="h-full flex flex-col justify-center">
+      <h1 class="mb-4 text-xl sm:text-2xl md:text-4xl font-audioWide font-bold">
+        Cuartos de Final
+      </h1>
+      <section class="mt-10">
+        <h2 class="font-bold text-2xl mb-4">
+          Parejas que avanzaron a está fase
+        </h2>
+        <Table className="overflow-x-auto">
+          <TableCaption>Parejas que avanzaron a cuartos de Final</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead
+                className="text-center xs:text-left text-sm xs:text-base"
+                >Pareja</TableHead
+              >
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {
+              duosInThisPhase.map((duo: any) => (
+                <TableRow>
+                  <TableCell>
+                    {duo.player1} / {duo.player2}
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={1}>Total Parejas</TableCell>
+              <TableCell>{duosInThisPhase.length}</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </section>
+
+      <section class="mt-10">
+        {
+          matchesByPhase.length > 0 && (
+            <>
+              <h2 class="text-2xl font-bold">Siguientes Matches</h2>
+              <MatchesList
+                client:load
+                matchesList={matchesByPhase}
+                isEditable={user ? true : false}
+              />
+            </>
+          )
+        }
+      </section>
+    </div>
+  </DashboardContainer>
+</DashboadLayout>
