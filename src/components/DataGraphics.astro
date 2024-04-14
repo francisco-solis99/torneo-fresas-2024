@@ -1,0 +1,176 @@
+---
+import { BarChart, Card } from "@tremor/react";
+import statsData from "@/stats/results.json";
+import { BarChartClick } from "@/components/BarChartClick";
+---
+
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3 class="sm:text-3xl text-xl font-medium">
+        Partidos jugados por pareja
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        Este gráfico muestra los partidos jugados en el torneo por cada pareja,
+        mientras más partidos jugó tu equipo, quiere decir que más lejos
+        llegaron en el torneo.
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChart
+        data={statsData}
+        index="players"
+        categories={["Partidos_Jugados"]}
+        colors={["teal"]}
+        yAxisWidth={45}
+        className="mt-6 h-80 fill-white text-xs shadow-tremor-dropdown"
+        showXAxis={false}
+        rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
+        tickGap={0}
+        client:load
+      />
+    </Card>
+  </div>
+</section>
+
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3
+        class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
+      >
+        Puntos realizados por pareja
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        Se muestran los puntos totales realizados por los equipos en todos los
+        partidos que les tocó disputar
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChart
+        data={statsData}
+        index="players"
+        categories={["puntos_hechos"]}
+        colors={["emerald"]}
+        yAxisWidth={45}
+        className="mt-6 h-80 fill-white text-xs"
+        showXAxis={false}
+        rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
+        tickGap={0}
+        client:load
+      />
+    </Card>
+  </div>
+</section>
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3
+        class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
+      >
+        Puntos recibidos por pareja
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        Aquí se pueden ver cuántos puntos recibieron los equipos en los partidos
+        que disputaron en el torneo.
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChart
+        data={statsData}
+        index="players"
+        categories={["puntos_recibidos"]}
+        colors={["orange"]}
+        yAxisWidth={45}
+        className="mt-6 h-80 fill-white text-xs"
+        showXAxis={false}
+        rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
+        tickGap={0}
+        client:load
+      />
+    </Card>
+  </div>
+</section>
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3
+        class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
+      >
+        Puntos realizados y recibidos por pareja
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        Una muy interesante comparativa que muestra cuantos puntos hicieron los
+        equipo vs cuantos puntos recibieron. Lo ideal sería que tu equipo tenga
+        más puntos hechos o que se mantengan parejos.
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChartClick charData={statsData} client:load />
+    </Card>
+  </div>
+</section>
+
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3
+        class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
+      >
+        Sinenergia de cada pareja
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        La sinergia nos muestra en porcentaje que tan bien funciona un equipo
+        respecto a sus integrantes, puede dar un buen indicio de comunicación,
+        adaptación al juego y ritmo del equipo.
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChart
+        data={statsData}
+        index="players"
+        categories={["Sinergia"]}
+        colors={["teal"]}
+        yAxisWidth={45}
+        className="mt-6 h-80 fill-white text-xs"
+        showXAxis={false}
+        rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
+        tickGap={0}
+        client:load
+      />
+      <div class="mt-5 text-sm">
+        <p>
+          Un equipo tiene buena sinergia cuando es capaz de anotar buena
+          cantidad de puntos, recibiendo los menos puntos posibles mientras
+          avanza de fases en el torneo.
+        </p>
+        <ul class="grid gap-y-2 mt-2 list-disc list-inside">
+          <li>
+            Si la sinergia de tu equipo es positiva esto quiere decir que
+            funcionan bien juntos los dos jugadores, mientras más alta sea la
+            sinergia de un equipo, mejor funciona este mismo con los jugadores
+            que lo integran. Por lo general, un porcentaje de sinergia por
+            encima del 40% indica un muy buen funcionamiento del equipo.
+          </li>
+          <li>
+            Si la sinergia de tu equipo se acerca a 0% o es negativa, no quiere
+            decir que sean malos jugando, quiere decir que el funcionamiento en
+            equipo de los dos jugadores no fue el mejor y hay que mejorar
+            aspectos de comunicación, roles, funcionamiento o como ultima
+            alternativa, cambiar de equipo.
+          </li>
+        </ul>
+      </div>
+    </Card>
+  </div>
+</section>
