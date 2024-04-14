@@ -3,9 +3,7 @@ export const prerender = true;
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/Container.astro";
 import Footer from "@/components/home/Footer.astro";
-import { BarChart, Card, Divider } from "@tremor/react";
-import statsData from "@/stats/results.json";
-import { BarChartClick } from "@/components/BarChartClick";
+import DataGraphics from "@/components/DataGraphics.astro";
 ---
 
 <Layout title="Torneo de las Fresas 2024" description="Torneo de las Freasas">
@@ -13,8 +11,10 @@ import { BarChartClick } from "@/components/BarChartClick";
     class="grid-pattern-background relative"
     style="--_num-lines: 7vmin; --_heigh-pattern: 40vh;"
   >
-    <div class="pt-14">
-      <h1 class="-skew-y-6 text-center font-bold font-audioWide text-5xl">
+    <div class="pt-14 px-8 md:px-10">
+      <h1
+        class="-skew-y-6 text-center font-bold font-audioWide text-3xl xs:text-4xl md:text-5xl"
+      >
         Estadisticas del <strong class="text-color-primary">
           <br /> Torneo de las Fresas 2024</strong
         >
@@ -23,142 +23,7 @@ import { BarChartClick } from "@/components/BarChartClick";
   </div>
 
   <Container class:list={["max-w-7xl"]}>
-    <section class="mt-20">
-      <div>
-        <Card className="sm:mx-auto sm:max-w-5xl">
-          <h3
-            class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
-          >
-            Partidos jugados por pareja
-          </h3>
-          <p class="text-tremor-default text-dark-tremor-content">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-          </p>
-          <span class="text-tremor-default text-dark-tremor-content"
-            >ajsdlas</span
-          >
-          <BarChart
-            data={statsData}
-            index="players"
-            categories={["Partidos_Jugados"]}
-            colors={["teal"]}
-            yAxisWidth={45}
-            className="mt-6 h-80 fill-white text-xs"
-            showXAxis={false}
-            rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
-            tickGap={0}
-            client:load
-          />
-        </Card>
-      </div>
-    </section>
-
-    <section class="mt-20">
-      <div>
-        <Card className="sm:mx-auto sm:max-w-5xl">
-          <h3
-            class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
-          >
-            Puntos realizados por pareja
-          </h3>
-          <p class="text-tremor-default text-dark-tremor-content">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-          </p>
-          <span class="text-tremor-default text-dark-tremor-content"
-            >ajsdlas</span
-          >
-          <BarChart
-            data={statsData}
-            index="players"
-            categories={["puntos_hechos"]}
-            colors={["emerald"]}
-            yAxisWidth={45}
-            className="mt-6 h-80 fill-white text-xs"
-            showXAxis={false}
-            rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
-            tickGap={0}
-            client:load
-          />
-        </Card>
-      </div>
-    </section>
-    <section class="mt-20">
-      <div>
-        <Card className="sm:mx-auto sm:max-w-5xl">
-          <h3
-            class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
-          >
-            Puntos recibidos por pareja
-          </h3>
-          <p class="text-tremor-default text-dark-tremor-content">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-          </p>
-          <span class="text-tremor-default text-dark-tremor-content"
-            >ajsdlas</span
-          >
-          <BarChart
-            data={statsData}
-            index="players"
-            categories={["puntos_recibidos"]}
-            colors={["orange"]}
-            yAxisWidth={45}
-            className="mt-6 h-80 fill-white text-xs"
-            showXAxis={false}
-            rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
-            tickGap={0}
-            client:load
-          />
-        </Card>
-      </div>
-    </section>
-    <section class="mt-20 [&]">
-      <div>
-        <Card className="sm:mx-auto sm:max-w-5xl">
-          <h3
-            class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
-          >
-            Puntos realizados y recibidos por pareja
-          </h3>
-          <p class="text-tremor-default text-dark-tremor-content">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-          </p>
-          <span class="text-tremor-default text-dark-tremor-content"
-            >ajsdlas</span
-          >
-          <BarChartClick charData={statsData} client:load />
-        </Card>
-      </div>
-    </section>
-
-    <section class="mt-20">
-      <div>
-        <Card className="sm:mx-auto sm:max-w-5xl">
-          <h3
-            class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
-          >
-            Sinenergia de cada pareja
-          </h3>
-          <p class="text-tremor-default text-dark-tremor-content">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-          </p>
-          <span class="text-tremor-default text-dark-tremor-content"
-            >ajsdlas</span
-          >
-          <BarChart
-            data={statsData}
-            index="players"
-            categories={["Sinergia"]}
-            colors={["teal"]}
-            yAxisWidth={45}
-            className="mt-6 h-80 fill-white text-xs"
-            showXAxis={false}
-            rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
-            tickGap={0}
-            client:load
-          />
-        </Card>
-      </div>
-    </section>
+    <DataGraphics />
   </Container>
   <Footer />
 </Layout>
