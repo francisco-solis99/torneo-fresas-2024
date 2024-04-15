@@ -1,6 +1,8 @@
 ---
 import { BarChart, Card } from "@tremor/react";
 import statsData from "@/stats/results.json";
+import { CustomTooltip } from "@/components/CustomToolTip";
+import groupsData from "@/stats/groups.json";
 import { BarChartClick } from "@/components/BarChartClick";
 ---
 
@@ -29,6 +31,7 @@ import { BarChartClick } from "@/components/BarChartClick";
         showXAxis={false}
         rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
         tickGap={0}
+        customTooltip={CustomTooltip}
         client:load
       />
     </Card>
@@ -57,7 +60,7 @@ import { BarChartClick } from "@/components/BarChartClick";
         categories={["puntos_hechos"]}
         colors={["emerald"]}
         yAxisWidth={45}
-        className="mt-6 h-80 fill-white text-xs"
+        className="mt-6 h-80 fill-white text-xs shadow-tremor-dropdown"
         showXAxis={false}
         rotateLabelX={{ angle: -90, verticalShift: 50, xAxisHeight: 150 }}
         tickGap={0}
@@ -171,6 +174,39 @@ import { BarChartClick } from "@/components/BarChartClick";
           </li>
         </ul>
       </div>
+    </Card>
+  </div>
+</section>
+
+<section class="mt-20">
+  <div class="sm:mx-auto sm:max-w-5xl">
+    <Card>
+      <h3
+        class="sm:text-3xl text-xl font-medium text-dark-tremor-content-strong"
+      >
+        Paridad de los grupos
+      </h3>
+      <p class="mt-3 text-tremor-default text-dark-tremor-content">
+        Este gráfico nos muestra que tan parejos estuvieron los equipos de cada
+        uno de los grupos. Un índice de paridad más pequeño indicaría que los
+        equipos dentro del grupo estuvieron más parejos en términos de
+        rendimiento, mientras que un índice de paridad más grande indicaría una
+        mayor variabilidad en el rendimiento entre los equipos del grupo.
+      </p>
+      <span class="px-1 text-tremor-default italic bg-primary rounded-sm">
+        Pasa el mouse o da click en las barras para ver más detalles de cada
+        registro
+      </span>
+      <BarChart
+        data={groupsData}
+        index="name"
+        categories={["indice_paridad"]}
+        colors={["orange"]}
+        yAxisWidth={45}
+        className="mt-6 h-80 fill-white text-xs"
+        tickGap={0}
+        client:load
+      />
     </Card>
   </div>
 </section>
